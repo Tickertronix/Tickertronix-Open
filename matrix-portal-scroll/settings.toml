@@ -1,0 +1,2 @@
+# Disable automatic display initialization to prevent power issues
+CIRCUITPY_DISPLAY_LIMIT = "0"

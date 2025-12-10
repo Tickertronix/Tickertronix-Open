@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+
+{% block title %}Prices - Alpaca Price Hub{% endblock %}
+
+{% block content %}
+<h1 style="margin-bottom: 20px;">Live Prices</h1>
+
+<div class="card" style="margin-bottom: 15px; display: flex; gap: 12px; align-items: center;">
+    <button id="refresh-now-btn" class="btn btn-secondary" style="padding: 10px 16px;">
+        Fetch Latest Now
+    </button>
+    <span id="refresh-status" style="color: #6c757d; font-size: 14px;"></span>
+</div>
+
+{% if scheduler_status %}
+<div class="card">
+    <div class="status-box">
+        <div class="status-item">
+            <div class="status-label">Scheduler</div>
+            <div class="status-value">
+                {% if scheduler_status.is_running %}
+                    <span class="badge badge-success">Running</span>
+                {% else %}
+                    <span class="badge badge-warning">Stopped</span>
+                {% endif %}
+            </div>
+        </div>
+        {% if scheduler_status.last_update %}
+        <div class="status-item">
+            <div class="status-label">Last Update</div>
+            <div class="status-value" style="font-size: 14px;">{{ scheduler_status.last_update[:19] }}</div>
+        </div>
+        {% endif %}
+        {% if scheduler_status.next_update %}
+        <div class="status-item">
+            <div class="status-label">Next Update</div>
+            <div class="status-value" style="font-size: 14px;">{{ scheduler_status.next_update[:19] }}</div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+{% if prices %}
+<div class="card">
+    <h2>All Prices ({{ prices|length }})</h2>
+    <p id="refresh-hint" style="margin: 0 0 15px 0; color: #6c757d;">
+        Use “Fetch Latest Now” to refresh prices instantly.
+    </p>
+
+    <div class="table-scroll">
+        <table>
+            <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Class</th>
+                    <th>Prev Close</th>
+                    <th>Open</th>
+                    <th>Last</th>
+                    <th>Change</th>
+                    <th>%</th>
+                    <th>Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for price in prices %}
+                {% set price_fmt = "%.3f" if price.asset_class == 'forex' else "%.2f" %}
+                <tr>
+                    <td><strong>{{ price.symbol }}</strong></td>
+                    <td><span class="badge badge-success">{{ price.asset_class }}</span></td>
+                    <td>${{ price_fmt|format(price.prev_close or 0) }}</td>
+                    <td>${{ price_fmt|format(price.open_price or 0) }}</td>
+                    <td>${{ price_fmt|format(price.last_price) }}</td>
+                    <td class="{% if price.change_amount >= 0 %}positive{% else %}negative{% endif %}">
+                        {{ "%+.4f"|format(price.change_amount) }}
+                    </td>
+                    <td class="{% if price.change_percent >= 0 %}positive{% else %}negative{% endif %}">
+                        <strong>{{ "%+.2f"|format(price.change_percent) }}%</strong>
+                    </td>
+                    <td style="font-size: 12px;">{{ price.last_updated[11:19] if price.last_updated else 'N/A' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Summary by Class -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+    {% set stocks = prices | selectattr('asset_class', 'equalto', 'stocks') | list %}
+    {% if stocks %}
+    <div class="card">
+        <h2>📈 Stocks ({{ stocks|length }})</h2>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Prev Close</th>
+                        <th>Last</th>
+                        <th>%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for price in stocks %}
+                    <tr>
+                        <td><strong>{{ price.symbol }}</strong></td>
+                        <td>${{ "%.2f"|format(price.prev_close or 0) }}</td>
+                        <td>${{ "%.2f"|format(price.last_price) }}</td>
+                        <td class="{% if price.change_percent >= 0 %}positive{% else %}negative{% endif %}">
+                            {{ "%+.2f"|format(price.change_percent) }}%
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    {% set forex = prices | selectattr('asset_class', 'equalto', 'forex') | list %}
+    {% if forex %}
+    <div class="card">
+        <h2>💱 Forex ({{ forex|length }})</h2>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pair</th>
+                        <th>Prev Close</th>
+                        <th>Rate</th>
+                        <th>%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for price in forex %}
+                    <tr>
+                        <td><strong>{{ price.symbol }}</strong></td>
+                        <td>{{ "%.3f"|format(price.prev_close or 0) }}</td>
+                        <td>{{ "%.3f"|format(price.last_price) }}</td>
+                        <td class="{% if price.change_percent >= 0 %}positive{% else %}negative{% endif %}">
+                            {{ "%+.2f"|format(price.change_percent) }}%
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    {% set crypto = prices | selectattr('asset_class', 'equalto', 'crypto') | list %}
+    {% if crypto %}
+    <div class="card">
+        <h2>₿ Crypto ({{ crypto|length }})</h2>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Prev Close</th>
+                        <th>Last</th>
+                        <th>%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for price in crypto %}
+                    <tr>
+                        <td><strong>{{ price.symbol }}</strong></td>
+                        <td>${{ "%.2f"|format(price.prev_close or 0) }}</td>
+                        <td>${{ "%.2f"|format(price.last_price) }}</td>
+                        <td class="{% if price.change_percent >= 0 %}positive{% else %}negative{% endif %}">
+                            {{ "%+.2f"|format(price.change_percent) }}%
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% else %}
+<div class="alert alert-info">
+    No price data available yet. <br><br>
+    <a href="/assets" class="btn">Select Assets</a> and wait for the first update,
+    or click "Fetch Latest Now" after adding assets.
+</div>
+{% endif %}
+
+<script>
+    const refreshBtn = document.getElementById('refresh-now-btn');
+    const refreshStatus = document.getElementById('refresh-status');
+
+    function setStatus(text, color = '#6c757d') {
+        if (refreshStatus) {
+            refreshStatus.textContent = text;
+            refreshStatus.style.color = color;
+        }
+    }
+
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', async () => {
+            refreshBtn.disabled = true;
+            setStatus('Refreshing...');
+            try {
+                const resp = await fetch('/api/refresh', {method: 'POST'});
+                const data = await resp.json();
+                if (data.success) {
+                    setStatus('Updated. Reloading...', '#2E7D32');
+                    setTimeout(() => window.location.reload(), 800);
+                } else {
+                    setStatus(data.message || 'Refresh failed', '#C62828');
+                    refreshBtn.disabled = false;
+                }
+            } catch (err) {
+                setStatus('Refresh failed', '#C62828');
+                refreshBtn.disabled = false;
+            }
+        });
+    }
+
+</script>
+{% endblock %}
