@@ -361,6 +361,7 @@ sqlite3 data/prices.db "SELECT * FROM asset_prices ORDER BY last_updated DESC LI
 ## Raspberry Pi (Local Hub)
 
 - For a Pi Zero 2 W friendly install, see `docs/PI_DEPLOY.md`.
+- To bake a reproducible Raspberry Pi OS image with the hub preinstalled (pi-gen), see `pigen/README.md` (build) and `docs/PI_IMAGE.md` (flash/use).
 - One-command setup: `sudo ./scripts/setup_pi.sh --hostname tickertronixhub` (installs deps, venv, systemd service).
 - Default mDNS host: `tickertronixhub.local`, port `5001` → `http://tickertronixhub.local:5001/prices`.
 - Systemd service: `tickertronixhub` (logs via `journalctl -u tickertronixhub -f`).

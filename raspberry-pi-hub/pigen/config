@@ -1,0 +1,18 @@
+IMG_NAME=tickertronix-hub
+ENABLE_SSH=1
+HOSTNAME=tickertronixhub
+FIRST_USER_NAME=pi
+FIRST_USER_PASS=tickertronix
+TIMEZONE_DEFAULT=UTC
+LOCALE_DEFAULT=en_US.UTF-8
+KEYBOARD_KEYMAP=us
+TARGET_ARCH=arm64
+WPA_COUNTRY=US
+STAGE_LIST="stage0 stage1 stage2 stage-tickertronix"
+DEPLOY_ZIP=1
+
+TICKERTRONIX_REPO_URL=https://github.com/tickertronix/alpaca-price-hub.git
+TICKERTRONIX_REF=main
+TICKERTRONIX_INSTALL_DIR=/opt/tickertronix
+TICKERTRONIX_SERVICE_NAME=tickertronixhub
+TICKERTRONIX_SERVICE_USER=pi
