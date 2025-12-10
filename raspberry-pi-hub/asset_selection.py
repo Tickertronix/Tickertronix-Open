@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Interactive asset selection for Alpaca Price Hub.
+Interactive asset selection for Raspberry Pi Hub.
 Command-line tool to select assets when GUI is not available.
 """
 
@@ -186,7 +186,7 @@ def clear_all(db):
 def main():
     """Main entry point."""
     print("=" * 70)
-    print("Alpaca Price Hub - Asset Selection")
+    print("Raspberry Pi Hub - Asset Selection")
     print("=" * 70)
 
     # Initialize database

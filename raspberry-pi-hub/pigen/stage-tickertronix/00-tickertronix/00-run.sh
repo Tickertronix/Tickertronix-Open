@@ -33,7 +33,7 @@ chown -R "\$SERVICE_USER":"\$SERVICE_USER" "\$INSTALL_DIR"
 
 cat >/etc/systemd/system/\${SERVICE_NAME}.service <<SERVICE
 [Unit]
-Description=Tickertronix Hub (Alpaca price + web UI)
+Description=Tickertronix Hub (Market data + web UI)
 After=network-online.target
 Wants=network-online.target
 

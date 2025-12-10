@@ -16,7 +16,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 print("=" * 70)
-print("Alpaca Price Hub - Core Functionality Test")
+print("Raspberry Pi Hub - Core Functionality Test")
 print("=" * 70)
 print()
 

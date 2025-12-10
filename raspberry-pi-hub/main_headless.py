@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Alpaca Price Hub - Headless Mode (No GUI)
+Raspberry Pi Hub - Headless Mode (No GUI)
 
 Runs the API server and scheduler without the GUI interface.
 Useful for:
@@ -43,7 +43,7 @@ def setup_logging():
 
     logger = logging.getLogger(__name__)
     logger.info("=" * 70)
-    logger.info("Alpaca Price Hub - Headless Mode")
+    logger.info("Raspberry Pi Hub - Headless Mode")
     logger.info("=" * 70)
     logger.info(f"Database: {config.DB_PATH}")
     logger.info(f"Log file: {config.LOG_PATH}")
@@ -56,7 +56,7 @@ def setup_logging():
 def parse_args():
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
-        description='Alpaca Price Hub - Headless Mode'
+        description='Raspberry Pi Hub - Headless Mode'
     )
     parser.add_argument(
         '--api-key',
@@ -167,7 +167,7 @@ def main():
         # Print status
         print()
         print("=" * 70)
-        print("ALPACA PRICE HUB - RUNNING")
+        print("RASPBERRY PI HUB - RUNNING")
         print("=" * 70)
         print(f"API Server: http://localhost:{config.API_PORT}")
         print(f"Selected Assets: {len(assets)}")
@@ -197,7 +197,7 @@ def main():
     finally:
         if scheduler_instance:
             scheduler_instance.stop()
-        logger.info("Alpaca Price Hub - Shutdown Complete")
+        logger.info("Raspberry Pi Hub - Shutdown Complete")
 
 
 if __name__ == '__main__':

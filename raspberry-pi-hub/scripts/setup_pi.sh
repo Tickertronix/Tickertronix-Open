@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Bootstrap script for running Alpaca Price Hub on a Raspberry Pi (Zero 2 W friendly).
+# Bootstrap script for running Raspberry Pi Hub on a Raspberry Pi (Zero 2 W friendly).
 # - Installs dependencies
 # - Creates/updates venv
 # - Installs systemd service to run main_web.py on boot

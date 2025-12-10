@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Interactive credentials setup for Alpaca Price Hub.
+Interactive credentials setup for Raspberry Pi Hub.
 Stores credentials in the database for use by the application.
 """
 
@@ -10,7 +10,7 @@ from db import Database
 from alpaca_client import AlpacaClient
 
 print("=" * 70)
-print("Alpaca Price Hub - Credentials Setup")
+print("Raspberry Pi Hub - Credentials Setup")
 print("=" * 70)
 print()
 print("This script will save your Alpaca API credentials to the database.")

@@ -1,4 +1,4 @@
-# Alpaca Price Hub
+# Raspberry Pi Hub
 
 A local "price hub" application for Raspberry Pi OS 64-bit that fetches market data from Alpaca's free-tier API and exposes it via a local HTTP API for other devices on your LAN.
 
@@ -34,8 +34,8 @@ sudo apt install python3-tk python3-pip
 ```bash
 cd ~
 # If using git:
-git clone <repository-url> alpaca-price-hub
-cd alpaca-price-hub
+git clone <repository-url> raspberry-pi-hub
+cd raspberry-pi-hub
 
 # Or extract the zip file if downloaded
 ```
@@ -98,21 +98,21 @@ To have the price hub start automatically when your Raspberry Pi boots:
 1. Create a systemd service file:
 
 ```bash
-sudo nano /etc/systemd/system/alpaca-price-hub.service
+sudo nano /etc/systemd/system/raspberry-pi-hub.service
 ```
 
 2. Add the following content (adjust paths as needed):
 
 ```ini
 [Unit]
-Description=Alpaca Price Hub
+Description=Raspberry Pi Hub
 After=network.target
 
 [Service]
 Type=simple
 User=pi
-WorkingDirectory=/home/pi/alpaca-price-hub
-ExecStart=/usr/bin/python3 /home/pi/alpaca-price-hub/main.py
+WorkingDirectory=/home/pi/raspberry-pi-hub
+ExecStart=/usr/bin/python3 /home/pi/raspberry-pi-hub/main.py
 Restart=always
 RestartSec=10
 Environment="DISPLAY=:0"
@@ -125,8 +125,8 @@ WantedBy=multi-user.target
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable alpaca-price-hub
-sudo systemctl start alpaca-price-hub
+sudo systemctl enable raspberry-pi-hub
+sudo systemctl start raspberry-pi-hub
 ```
 
 ## Local HTTP API
@@ -247,7 +247,7 @@ You can modify settings in `config.py`:
 ## Project Structure
 
 ```
-alpaca-price-hub/
+raspberry-pi-hub/
 ├── main.py                 # Entry point
 ├── ui.py                   # tkinter GUI
 ├── alpaca_client.py        # Alpaca API client

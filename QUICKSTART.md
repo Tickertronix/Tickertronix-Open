@@ -4,7 +4,7 @@
 
 1. **Run the installation script:**
    ```bash
-   cd ~/alpaca-price-hub
+   cd ~/raspberry-pi-hub
    ./install.sh
    ```
 

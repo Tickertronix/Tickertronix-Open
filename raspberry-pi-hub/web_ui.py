@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Web-based UI for Alpaca Price Hub.
+Web-based UI for Raspberry Pi Hub.
 Access via browser - works on Windows, WSL, and Raspberry Pi.
 """
 
@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 # Create Flask app with static folder
 web_app = Flask(__name__, static_folder='static', static_url_path='/static')
-web_app.secret_key = 'alpaca-price-hub-secret-key-change-in-production'
+web_app.secret_key = 'raspberry-pi-hub-secret-key-change-in-production'
 
 # Global instances (set by init_web_ui)
 db = None

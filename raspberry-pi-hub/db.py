@@ -1,5 +1,5 @@
 """
-Database operations for Alpaca Price Hub.
+Database operations for Raspberry Pi Hub.
 Uses SQLite for local storage of credentials, selected assets, and price data.
 """
 

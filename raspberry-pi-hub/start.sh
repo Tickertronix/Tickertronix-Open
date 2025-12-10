@@ -1,5 +1,5 @@
 #!/bin/bash
-# Quick start script for Alpaca Price Hub
+# Quick start script for Raspberry Pi Hub
 
 # Set DISPLAY if not already set (for GUI)
 if [ -z "$DISPLAY" ]; then

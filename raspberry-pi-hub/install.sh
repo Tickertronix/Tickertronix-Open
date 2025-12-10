@@ -1,8 +1,8 @@
 #!/bin/bash
-# Installation script for Alpaca Price Hub on Raspberry Pi OS
+# Installation script for Raspberry Pi Hub on Raspberry Pi OS
 
 echo "========================================"
-echo "Alpaca Price Hub - Installation"
+echo "Raspberry Pi Hub - Installation"
 echo "========================================"
 echo ""
 

@@ -1,5 +1,5 @@
 """
-GUI interface for Alpaca Price Hub using tkinter.
+GUI interface for Raspberry Pi Hub using tkinter.
 Provides screens for credential entry, asset selection, and status monitoring.
 """
 
@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 class PriceHubGUI:
-    """Main GUI application for Alpaca Price Hub."""
+    """Main GUI application for Raspberry Pi Hub."""
 
     def __init__(self, db: Database, alpaca_client: AlpacaClient, scheduler: PriceScheduler):
         """
@@ -50,7 +50,7 @@ class PriceHubGUI:
 
         # Create main window
         self.root = tk.Tk()
-        self.root.title("Alpaca Price Hub")
+        self.root.title("Raspberry Pi Hub")
         self.root.geometry("800x600")
 
         # Check if credentials exist

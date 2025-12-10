@@ -1,5 +1,5 @@
 """
-Configuration constants for Alpaca Price Hub application.
+Configuration constants for Raspberry Pi Hub application.
 """
 
 import os

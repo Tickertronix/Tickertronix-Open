@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Alpaca Price Hub - Web UI Mode
+Raspberry Pi Hub - Web UI Mode
 
 Runs both the Web UI (port 8080) and REST API (port 5001).
 Access via browser - works on Windows, WSL, and Raspberry Pi.
@@ -40,7 +40,7 @@ def setup_logging():
 
     logger = logging.getLogger(__name__)
     logger.info("=" * 70)
-    logger.info("Alpaca Price Hub - Web UI Mode")
+    logger.info("Raspberry Pi Hub - Web UI Mode")
     logger.info("=" * 70)
     logger.info(f"Database: {config.DB_PATH}")
     logger.info(f"Log file: {config.LOG_PATH}")
@@ -127,7 +127,7 @@ def main():
         # Print startup info
         print()
         print("=" * 70)
-        print("🚀 ALPACA PRICE HUB - WEB UI")
+        print("🚀 RASPBERRY PI HUB - WEB UI")
         print("=" * 70)
         print()
         print("✅ Application is running!")
@@ -157,7 +157,7 @@ def main():
     finally:
         if scheduler_instance:
             scheduler_instance.stop()
-        logger.info("Alpaca Price Hub - Shutdown Complete")
+        logger.info("Raspberry Pi Hub - Shutdown Complete")
 
 
 if __name__ == '__main__':

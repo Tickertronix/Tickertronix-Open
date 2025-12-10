@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Alpaca Price Hub - Main Entry Point
+Raspberry Pi Hub - Main Entry Point
 
 A local "price hub" application for Raspberry Pi that fetches market data
 from Alpaca's free-tier API and exposes it via a local HTTP API.
@@ -39,7 +39,7 @@ def setup_logging():
 
     logger = logging.getLogger(__name__)
     logger.info("=" * 70)
-    logger.info("Alpaca Price Hub - Starting Application")
+    logger.info("Raspberry Pi Hub - Starting Application")
     logger.info("=" * 70)
     logger.info(f"Database: {config.DB_PATH}")
     logger.info(f"Log file: {config.LOG_PATH}")
@@ -106,7 +106,7 @@ def main():
         logger.error(f"Fatal error: {e}", exc_info=True)
         sys.exit(1)
     finally:
-        logger.info("Alpaca Price Hub - Shutdown Complete")
+        logger.info("Raspberry Pi Hub - Shutdown Complete")
 
 
 if __name__ == '__main__':

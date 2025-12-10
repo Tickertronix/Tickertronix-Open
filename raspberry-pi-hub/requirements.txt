@@ -1,4 +1,4 @@
-# Alpaca Price Hub - Python Dependencies
+# Raspberry Pi Hub - Python Dependencies
 # Install with: pip3 install -r requirements.txt
 
 # HTTP requests

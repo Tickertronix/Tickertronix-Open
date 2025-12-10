@@ -77,7 +77,7 @@ def main():
     signal.signal(signal.SIGTERM, signal_handler)
 
     print("=" * 70)
-    print("Alpaca Price Hub - DEMO MODE")
+    print("Raspberry Pi Hub - DEMO MODE")
     print("=" * 70)
     print()
     print("Running with sample data (no Alpaca API needed)")
