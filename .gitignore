@@ -42,6 +42,7 @@ optional-path-to-log-file
 # IDE
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 *~
