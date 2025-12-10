@@ -39,6 +39,10 @@ logs/
 *.log
 optional-path-to-log-file
 
+# Device-specific runtime
+wifi.dat
+device_config.json
+
 # IDE
 .vscode/
 .idea/
@@ -50,3 +54,11 @@ optional-path-to-log-file
 # OS
 .DS_Store
 Thumbs.db
+.fseventsd/
+.Trashes/
+.metadata_never_index
+
+# Test and debug files
+**/test_*.py
+**/debug_*.py
+**/simplified_*.py

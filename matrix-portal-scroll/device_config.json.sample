@@ -1,3 +1,10 @@
 {
-  "device_key": "PROV-XXXX-XXXX-XXXX"
+  "hub_base_url": "http://YOUR_RASPBERRY_PI_IP:5001",
+  "provisioned_at": 0,
+  "device_key": "PROV-XXXX-XXXX-XXXX",
+  "update_interval": 30,
+  "scroll_mode": "single",
+  "brightness": 10,
+  "display_mode": "dark",
+  "scroll_speed": 100
 }
