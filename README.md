@@ -2,6 +2,9 @@
 
 > Open-source real-time financial ticker display system with Raspberry Pi hub and multiple display options
 
+[![Tickertronix devices preview](assets/hero/hero.jpg)](assets/hero/hero.jpg)  
+Tickertronix hub with Matrix Portal display (example build).
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## Overview
@@ -71,6 +74,9 @@ Continuous scrolling ticker across one or multiple 64x32 LED matrix panels.
 - 3D printable enclosure
 - Release bundle: `matrix-portal-scroll.zip` on GitHub Releases (or build locally with `./scripts/build_matrix_portal_releases.sh`)
 
+![Matrix Portal Scroll demo](assets/matrix-portal-scroll/demo.jpg)  
+Matrix Portal Scroll multi-panel build.
+
 [**→ Full Setup Guide**](matrix-portal-scroll/README.md) | [**→ Setup Instructions**](matrix-portal-scroll/SETUP_INSTRUCTIONS.md)
 
 ---
@@ -95,6 +101,9 @@ Shows one asset at a time on a 64x32 LED panel, cycling through your watchlist.
 - 3D printable enclosure
 - Release bundle: `matrix-portal-single.zip` on GitHub Releases (or build locally with `./scripts/build_matrix_portal_releases.sh`)
 
+![Matrix Portal Single demo](assets/matrix-portal-single/demo.jpg)  
+Matrix Portal Single one-panel build.
+
 [**→ Full Setup Guide**](matrix-portal-single/README.md)
 
 ---
@@ -117,6 +126,9 @@ Touchscreen ticker display with interactive provisioning and stock browsing.
 - Local hub mode (no cloud authentication)
 - SD card support for logging
 - 3D printable retro case
+
+![CYD Ticker demo](assets/cyd-ticker-il9341/demo.png)  
+CYD Ticker assembled build (ESP32-2432S028R).
 
 [**→ Full Setup Guide**](cyd-ticker-il9341/README.md)
 

@@ -2,6 +2,8 @@
 
 Single-panel (64×32) Matrix Portal S3 display that shows one asset at a time, cycling through your watchlist with configurable dwell time.
 
+![Matrix Portal Single demo](../assets/matrix-portal-single/demo.jpg)
+
 ## Overview
 
 The Matrix Portal Single provides a full-screen display for individual assets on a single 64×32 LED matrix panel. Unlike the scrolling display, this version shows complete asset information (symbol, name, price, change) for one asset at a time before transitioning to the next. Perfect for desk setups where you want to focus on one stock at a time.

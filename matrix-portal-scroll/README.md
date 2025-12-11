@@ -2,6 +2,8 @@
 
 CircuitPython firmware for the Matrix Portal S3 scrolling ticker, now talking to the local Hub (no cloud auth).
 
+![Matrix Portal Scroll demo](../assets/matrix-portal-scroll/demo.jpg)
+
 ## What changed
 - Uses the Hub’s `/prices` endpoint via `LocalHubAPI` (no HMAC/provisioning keys).
 - Provisioning collects Wi‑Fi + Hub URL; no PROV keys. Saves `wifi.dat` and `device_config.json` with `hub_base_url`.

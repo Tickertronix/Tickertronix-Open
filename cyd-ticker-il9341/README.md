@@ -1,5 +1,7 @@
 # CYD Ticker (Cheap Yellow Display)
 
+![CYD Ticker demo](../assets/cyd-ticker-il9341/demo.png)
+
 Real-time financial ticker display for the ESP32-2432S028R "Cheap Yellow Display" with touchscreen provisioning and retro-styled UI.
 
 ## Overview
