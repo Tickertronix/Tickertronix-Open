@@ -1,5 +1,49 @@
 // ========== API FUNCTIONS ==========
 
+bool sendHubHeartbeat() {
+  // Only used for local hub mode (no HMAC) to register the CYD as a device
+  if (!localHubMode) return false;
+  if (!WiFi.isConnected()) {
+    Serial.println("[HUB] Heartbeat skipped (no WiFi)");
+    return false;
+  }
+
+  // Prefer the saved deviceKey; fall back to hardware-derived ID
+  String deviceId = credentials.deviceKey;
+  if (deviceId.length() == 0) {
+    String hw = hmacAuth.getHardwareId();
+    if (hw.length() > 0) {
+      deviceId = "LOCAL-" + hw;
+    }
+  }
+  if (deviceId.length() == 0) {
+    Serial.println("[HUB] Heartbeat skipped (no device id)");
+    return false;
+  }
+
+  HTTPClient http;
+  String url = API_BASE_URL + "/device/" + deviceId + "/heartbeat";
+  Serial.println("[HUB] Heartbeat -> " + url);
+
+  if (!http.begin(url)) {
+    Serial.println("[HUB] Heartbeat http.begin failed");
+    return false;
+  }
+
+  http.addHeader("Content-Type", "application/json");
+  String payload = "{\"device_type\":\"cyd_il9341\",\"device_name\":\"CYD Display\"}";
+  int httpCode = http.POST(payload);
+  String response = http.getString();
+  http.end();
+
+  Serial.println("[HUB] Heartbeat code: " + String(httpCode));
+  if (httpCode != 200) {
+    Serial.println("[HUB] Heartbeat response: " + response);
+  }
+
+  return httpCode == 200;
+}
+
 bool registerDevice(String provKey) {
   if (!WiFi.isConnected()) {
     provisioningError = "No WiFi connection";
@@ -113,6 +157,9 @@ bool fetchTickerData() {
     Serial.println("[API] No WiFi connection");
     return false;
   }
+
+  // Register with the hub so the device shows up in /devices
+  sendHubHeartbeat();
 
   // Local hub fetch (no HMAC) -> /prices
   HTTPClient http;

@@ -48,90 +48,92 @@
         </div>
 
         <form class="device-settings-form" data-device-id="{{ device.device_id }}">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px;">
-                <div class="scroll-only">
-                    <label>Scroll Mode</label>
-                    <div style="display: flex; gap: 15px; align-items: center;">
-                        <label style="display: flex; align-items: center; font-weight: normal; margin: 0;">
-                            <input type="radio" name="scroll_mode" value="single" style="width: auto; margin: 0 5px 0 0;" checked>
-                            Single Line
-                        </label>
-                        <label style="display: flex; align-items: center; font-weight: normal; margin: 0;">
-                            <input type="radio" name="scroll_mode" value="dual" style="width: auto; margin: 0 5px 0 0;">
-                            Dual Line
-                        </label>
-                    </div>
-                </div>
-
-                <div class="scroll-only">
-                    <label for="scroll_speed_{{ device.device_id }}">Scroll Speed (10-200 px/s)</label>
-                    <input type="number" id="scroll_speed_{{ device.device_id }}" name="scroll_speed" min="10" max="200" value="100">
-                </div>
-
-                <div>
-                    <label for="brightness_{{ device.device_id }}">Brightness (1-10 scale)</label>
-                    <input type="number" id="brightness_{{ device.device_id }}" name="brightness" min="1" max="10" value="10">
-                </div>
-
-                <div>
-                    <label for="update_interval_{{ device.device_id }}">Update Interval (seconds)</label>
-                    <input type="number" id="update_interval_{{ device.device_id }}" name="update_interval" min="60" max="900" value="300">
-                </div>
-
-                <div class="single-only">
-                    <label for="dwell_seconds_{{ device.device_id }}">Single Panel: Dwell Seconds (1-30)</label>
-                    <input type="number" id="dwell_seconds_{{ device.device_id }}" name="dwell_seconds" min="1" max="30" step="0.5" value="3">
-                </div>
-            </div>
-
-            <div class="dual-line-config scroll-only" style="border-top: 1px solid #E0E0E0; padding-top: 20px; margin-top: 20px;">
-                <h4 style="margin-bottom: 15px; color: #00031C; font-size: 16px;">Dual Line Configuration (scroll devices)</h4>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                    <div>
-                        <label>Top Line Data Sources</label>
-                        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div class="matrix-settings">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px;">
+                    <div class="scroll-only">
+                        <label>Scroll Mode</label>
+                        <div style="display: flex; gap: 15px; align-items: center;">
                             <label style="display: flex; align-items: center; font-weight: normal; margin: 0;">
-                                <input type="checkbox" name="top_sources" value="stocks" style="width: auto; margin: 0 8px 0 0;" checked>
-                                Stocks
+                                <input type="radio" name="scroll_mode" value="single" style="width: auto; margin: 0 5px 0 0;" checked>
+                                Single Line
                             </label>
                             <label style="display: flex; align-items: center; font-weight: normal; margin: 0;">
-                                <input type="checkbox" name="top_sources" value="crypto" style="width: auto; margin: 0 8px 0 0;">
-                                Crypto
-                            </label>
-                            <label style="display: flex; align-items: center; font-weight: normal; margin: 0;">
-                                <input type="checkbox" name="top_sources" value="forex" style="width: auto; margin: 0 8px 0 0;">
-                                Forex
+                                <input type="radio" name="scroll_mode" value="dual" style="width: auto; margin: 0 5px 0 0;">
+                                Dual Line
                             </label>
                         </div>
                     </div>
 
+                    <div class="scroll-only">
+                        <label for="scroll_speed_{{ device.device_id }}">Scroll Speed (10-200 px/s)</label>
+                        <input type="number" id="scroll_speed_{{ device.device_id }}" name="scroll_speed" min="10" max="200" value="100">
+                    </div>
+
                     <div>
-                        <label>Bottom Line Data Sources</label>
-                        <div style="display: flex; flex-direction: column; gap: 8px;">
-                            <label style="display: flex; align-items: center; font-weight: normal; margin: 0;">
-                                <input type="checkbox" name="bottom_sources" value="stocks" style="width: auto; margin: 0 8px 0 0;">
-                                Stocks
-                            </label>
-                            <label style="display: flex; align-items: center; font-weight: normal; margin: 0;">
-                                <input type="checkbox" name="bottom_sources" value="crypto" style="width: auto; margin: 0 8px 0 0;" checked>
-                                Crypto
-                            </label>
-                            <label style="display: flex; align-items: center; font-weight: normal; margin: 0;">
-                                <input type="checkbox" name="bottom_sources" value="forex" style="width: auto; margin: 0 8px 0 0;" checked>
-                                Forex
-                            </label>
+                        <label for="brightness_{{ device.device_id }}">Brightness (1-10 scale)</label>
+                        <input type="number" id="brightness_{{ device.device_id }}" name="brightness" min="1" max="10" value="10">
+                    </div>
+
+                    <div>
+                        <label for="update_interval_{{ device.device_id }}">Update Interval (seconds)</label>
+                        <input type="number" id="update_interval_{{ device.device_id }}" name="update_interval" min="60" max="900" value="300">
+                    </div>
+
+                    <div class="single-only">
+                        <label for="dwell_seconds_{{ device.device_id }}">Single Panel: Dwell Seconds (1-30)</label>
+                        <input type="number" id="dwell_seconds_{{ device.device_id }}" name="dwell_seconds" min="1" max="30" step="0.5" value="3">
+                    </div>
+                </div>
+
+                <div class="dual-line-config scroll-only" style="border-top: 1px solid #E0E0E0; padding-top: 20px; margin-top: 20px;">
+                    <h4 style="margin-bottom: 15px; color: #00031C; font-size: 16px;">Dual Line Configuration (scroll devices)</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                        <div>
+                            <label>Top Line Data Sources</label>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <label style="display: flex; align-items: center; font-weight: normal; margin: 0;">
+                                    <input type="checkbox" name="top_sources" value="stocks" style="width: auto; margin: 0 8px 0 0;" checked>
+                                    Stocks
+                                </label>
+                                <label style="display: flex; align-items: center; font-weight: normal; margin: 0;">
+                                    <input type="checkbox" name="top_sources" value="crypto" style="width: auto; margin: 0 8px 0 0;">
+                                    Crypto
+                                </label>
+                                <label style="display: flex; align-items: center; font-weight: normal; margin: 0;">
+                                    <input type="checkbox" name="top_sources" value="forex" style="width: auto; margin: 0 8px 0 0;">
+                                    Forex
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label>Bottom Line Data Sources</label>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <label style="display: flex; align-items: center; font-weight: normal; margin: 0;">
+                                    <input type="checkbox" name="bottom_sources" value="stocks" style="width: auto; margin: 0 8px 0 0;">
+                                    Stocks
+                                </label>
+                                <label style="display: flex; align-items: center; font-weight: normal; margin: 0;">
+                                    <input type="checkbox" name="bottom_sources" value="crypto" style="width: auto; margin: 0 8px 0 0;" checked>
+                                    Crypto
+                                </label>
+                                <label style="display: flex; align-items: center; font-weight: normal; margin: 0;">
+                                    <input type="checkbox" name="bottom_sources" value="forex" style="width: auto; margin: 0 8px 0 0;" checked>
+                                    Forex
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="dual-line-config single-only" style="border-top: 1px solid #E0E0E0; padding-top: 20px; margin-top: 20px;">
-                <h4 style="margin-bottom: 15px; color: #00031C; font-size: 16px;">Single Panel Cycle (order)</h4>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                    <div>
-                        <label for="asset_order_{{ device.device_id }}">Asset Order (comma-separated)</label>
-                        <input type="text" id="asset_order_{{ device.device_id }}" name="asset_order" value="stocks,crypto,forex" placeholder="stocks,crypto,forex">
-                        <small style="color:#757575;">Valid entries: stocks, crypto, forex</small>
+                <div class="dual-line-config single-only" style="border-top: 1px solid #E0E0E0; padding-top: 20px; margin-top: 20px;">
+                    <h4 style="margin-bottom: 15px; color: #00031C; font-size: 16px;">Single Panel Cycle (order)</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                        <div>
+                            <label for="asset_order_{{ device.device_id }}">Asset Order (comma-separated)</label>
+                            <input type="text" id="asset_order_{{ device.device_id }}" name="asset_order" value="stocks,crypto,forex" placeholder="stocks,crypto,forex">
+                            <small style="color:#757575;">Valid entries: stocks, crypto, forex</small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -144,7 +146,11 @@
                 <span class="badge badge-primary device-status-chip" data-device-id="{{ device.device_id }}">Status</span>
             </div>
 
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <div class="non-matrix-note" style="display:none; padding:12px; border:1px solid #E0E0E0; border-radius:8px; background:#F9FAFB; color:#424242; font-size:13px; margin-bottom:12px;">
+                This device manages its display settings locally. Hub settings do not apply.
+            </div>
+
+            <div class="matrix-actions" style="display: flex; gap: 10px; margin-top: 20px;">
                 <button type="submit" class="btn btn-success">Save Settings</button>
                 <button type="button" class="btn btn-secondary" onclick="loadDeviceSettings('{{ device.device_id }}')">Reset to Current</button>
                 <button type="button" class="btn btn-primary" onclick="forceRefresh('{{ device.device_id }}')">Force Refresh</button>
@@ -228,12 +234,23 @@ async function loadDeviceSettings(deviceId) {
         document.querySelectorAll('.device-card').forEach(card => {
             const type = (card.dataset.deviceType || '').toLowerCase();
             const isSingle = type === 'matrix_portal_single';
-            card.querySelectorAll('.scroll-only').forEach(el => {
-                el.style.display = isSingle ? 'none' : '';
-            });
-            card.querySelectorAll('.single-only').forEach(el => {
-                el.style.display = isSingle ? '' : 'none';
-            });
+            const isCyd = type.startsWith('cyd');
+            if (isCyd) {
+                card.querySelectorAll('.matrix-settings').forEach(el => {
+                    el.style.display = 'none';
+                });
+                const note = card.querySelector('.non-matrix-note');
+                if (note) note.style.display = '';
+                const actions = card.querySelector('.matrix-actions');
+                if (actions) actions.style.display = 'none';
+            } else {
+                card.querySelectorAll('.scroll-only').forEach(el => {
+                    el.style.display = isSingle ? 'none' : '';
+                });
+                card.querySelectorAll('.single-only').forEach(el => {
+                    el.style.display = isSingle ? '' : 'none';
+                });
+            }
         });
 
         // Update active device count

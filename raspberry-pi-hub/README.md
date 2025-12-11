@@ -1,43 +1,91 @@
-# Raspberry Pi Hub
+# Tickertronix Hub (Raspberry Pi)
 
-A local "price hub" application for Raspberry Pi OS 64-bit that fetches market data from Alpaca's free-tier API and exposes it via a local HTTP API for other devices on your LAN.
+A local financial data hub that turns any Raspberry Pi into a market data server for your LAN. Fetches real-time prices from Alpaca's free-tier API and exposes them via HTTP.
+
+**Tested on:** Raspberry Pi Zero 2 W with Raspberry Pi OS Lite (Bookworm, 64-bit)
 
 ## Features
 
-- **Simple GUI** - tkinter-based interface for credentials and asset selection
-- **Multi-Asset Support** - Track stocks, forex, and crypto (up to 35 assets per class)
+- **Headless Operation** - Runs as a background service, no monitor needed
+- **Multi-Asset Support** - Track stocks, forex, and crypto (up to 50 assets per class)
 - **Automatic Updates** - Background scheduler fetches prices every 5 minutes
 - **Local Database** - SQLite storage for credentials and price history
-- **HTTP API** - REST endpoints accessible from other LAN devices
-- **Free Tier Only** - Data-only usage of Alpaca's free market data API
+- **HTTP API** - REST endpoints accessible from any device on your network
+- **mDNS Discovery** - Access via `tickertronixhub.local` (no IP needed)
+- **Free Tier Only** - Uses Alpaca's free market data API
 
-## Requirements
+## Quick Start (Recommended)
 
-- Raspberry Pi running Raspberry Pi OS 64-bit (or any Linux system)
-- Python 3.8 or higher
-- Internet connection
-- Alpaca account with API credentials (free tier)
+### Prerequisites
 
-## Installation
+1. **Raspberry Pi** with Raspberry Pi OS Lite (Bookworm, 64-bit) installed
+2. **SSH access** or keyboard/monitor connected
+3. **Internet connection** (WiFi or Ethernet)
+4. **Alpaca account** with API credentials from https://alpaca.markets
+
+### One-Command Setup
+
+SSH into your Pi, then run:
+
+```bash
+# Clone the repository
+git clone https://github.com/YOUR_REPO/raspberry-pi-hub.git
+cd raspberry-pi-hub
+
+# Run the setup script
+sudo ./setup.sh
+```
+
+The setup script will:
+- Install all system dependencies
+- Set up hostname as `tickertronixhub.local`
+- Create a Python virtual environment
+- Install the systemd service
+- Create the `tickertronix` CLI helper
+
+### Configure Credentials
+
+```bash
+tickertronix setup-credentials
+```
+
+Enter your Alpaca API Key and Secret when prompted.
+
+### Start the Service
+
+```bash
+tickertronix start
+
+# Enable auto-start on boot
+sudo systemctl enable tickertronix-hub
+```
+
+### Access Your Hub
+
+From any device on your network:
+```bash
+curl http://tickertronixhub.local:5001/health
+curl http://tickertronixhub.local:5001/prices
+```
+
+---
+
+## Manual Installation
+
+If you prefer to install manually or on a non-Pi system:
 
 ### 1. Install System Dependencies
 
-On Raspberry Pi OS, tkinter should already be installed. If not:
-
 ```bash
 sudo apt update
-sudo apt install python3-tk python3-pip
+sudo apt install -y python3 python3-pip python3-venv python3-tk git
 ```
 
-### 2. Clone or Download This Project
+### 2. Clone the Repository
 
 ```bash
-cd ~
-# If using git:
-git clone <repository-url> raspberry-pi-hub
+git clone https://github.com/YOUR_REPO/raspberry-pi-hub.git
 cd raspberry-pi-hub
-
-# Or extract the zip file if downloaded
 ```
 
 ### 3. Install Python Dependencies
@@ -358,13 +406,18 @@ You can query it directly if needed:
 sqlite3 data/prices.db "SELECT * FROM asset_prices ORDER BY last_updated DESC LIMIT 10;"
 ```
 
-## Raspberry Pi (Local Hub)
+## CLI Commands
 
-- For a Pi Zero 2 W friendly install, see `docs/PI_DEPLOY.md`.
-- To bake a reproducible Raspberry Pi OS image with the hub preinstalled (pi-gen), see `pigen/README.md` (build) and `docs/PI_IMAGE.md` (flash/use).
-- One-command setup: `sudo ./scripts/setup_pi.sh --hostname tickertronixhub` (installs deps, venv, systemd service).
-- Default mDNS host: `tickertronixhub.local`, port `5001` → `http://tickertronixhub.local:5001/prices`.
-- Systemd service: `tickertronixhub` (logs via `journalctl -u tickertronixhub -f`).
+After running `setup.sh`, the `tickertronix` command is available:
+
+| Command | Description |
+|---------|-------------|
+| `tickertronix start` | Start the hub service |
+| `tickertronix stop` | Stop the hub service |
+| `tickertronix restart` | Restart the hub service |
+| `tickertronix status` | Show service status |
+| `tickertronix logs` | Follow application logs |
+| `tickertronix setup-credentials` | Configure Alpaca API keys |
 
 ## Security Notes
 

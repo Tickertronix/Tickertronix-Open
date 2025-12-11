@@ -200,11 +200,20 @@ def get_device_settings(device_id):
         JSON object with device settings
     """
     try:
+        # Preserve any known device metadata to avoid overwriting type/name
+        existing = db.get_device_by_key(device_id)
+        device_type = request.args.get('device_type') or (
+            existing['device_type'] if existing and existing.get('device_type') else "matrix_portal_scroll"
+        )
+        device_name = request.args.get('device_name') or (
+            existing['device_name'] if existing and existing.get('device_name') else f"Device {device_id[:8]}"
+        )
+
         # Auto-register or refresh metadata/last_seen
         db.register_device(
             device_id=device_id,
-            device_name=f"Device {device_id[:8]}",
-            device_type="matrix_portal_scroll",
+            device_name=device_name,
+            device_type=device_type,
             device_key=device_id
         )
 
@@ -325,8 +334,13 @@ def device_heartbeat(device_id):
     try:
         # Extract optional device info from request body
         device_info = request.get_json() if request.is_json else {}
-        device_type = device_info.get('device_type', 'matrix_portal_scroll')
-        device_name = device_info.get('device_name', f"Device {device_id[:8]}")
+        existing = db.get_device_by_key(device_id)
+        device_type = device_info.get('device_type') or (
+            existing['device_type'] if existing and existing.get('device_type') else 'matrix_portal_scroll'
+        )
+        device_name = device_info.get('device_name') or (
+            existing['device_name'] if existing and existing.get('device_name') else f"Device {device_id[:8]}"
+        )
 
         # Register or update device info + last_seen
         db.register_device(
