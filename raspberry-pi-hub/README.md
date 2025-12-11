@@ -53,11 +53,12 @@ Enter your Alpaca API Key and Secret when prompted.
 
 ### Start the Service
 
-```bash
-tickertronix start
+`setup.sh` installs, enables, and starts the `tickertronix-hub` systemd service automatically. Use the helper to check or manage it:
 
-# Enable auto-start on boot
-sudo systemctl enable tickertronix-hub
+```bash
+tickertronix status    # view service status
+tickertronix restart   # restart after config changes
+tickertronix stop      # stop temporarily
 ```
 
 ### Access Your Hub
@@ -141,7 +142,7 @@ chmod +x main.py
 
 ### Running on Startup (Optional)
 
-To have the price hub start automatically when your Raspberry Pi boots:
+If you used `setup.sh`, this is already configured. For manual installs, create a systemd service so the hub starts when your Raspberry Pi boots:
 
 1. Create a systemd service file:
 
