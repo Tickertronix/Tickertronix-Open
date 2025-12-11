@@ -29,8 +29,8 @@ SSH into your Pi, then run:
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_REPO/raspberry-pi-hub.git
-cd raspberry-pi-hub
+git clone https://github.com/Tickertronix/Tickertronix-Open.git
+cd Tickertronix-Open/raspberry-pi-hub
 
 # Run the setup script
 sudo ./setup.sh
@@ -84,8 +84,8 @@ sudo apt install -y python3 python3-pip python3-venv python3-tk git
 ### 2. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_REPO/raspberry-pi-hub.git
-cd raspberry-pi-hub
+git clone https://github.com/Tickertronix/Tickertronix-Open.git
+cd Tickertronix-Open/raspberry-pi-hub
 ```
 
 ### 3. Install Python Dependencies

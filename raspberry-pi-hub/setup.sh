@@ -9,9 +9,8 @@
 # Requires: Raspberry Pi OS Lite (Bookworm, 64-bit recommended)
 #
 # Usage:
-#   curl -sSL https://raw.githubusercontent.com/YOUR_REPO/setup.sh | bash
-#   or
 #   ./setup.sh
+#
 #
 #===============================================================================
 
@@ -28,7 +27,7 @@ NC='\033[0m' # No Color
 INSTALL_DIR="/opt/tickertronix-hub"
 SERVICE_USER="tickertronix"
 HOSTNAME_NEW="tickertronixhub"
-REPO_URL="https://github.com/YOUR_REPO/raspberry-pi-hub.git"
+REPO_URL="https://github.com/Tickertronix/Tickertronix-Open.git"
 
 #-------------------------------------------------------------------------------
 # Helper functions
@@ -261,7 +260,7 @@ Type=simple
 User=tickertronix
 Group=tickertronix
 WorkingDirectory=/opt/tickertronix-hub
-ExecStart=/opt/tickertronix-hub/venv/bin/python3 main_headless.py
+ExecStart=/opt/tickertronix-hub/venv/bin/python3 main_web.py
 Restart=always
 RestartSec=10
 
@@ -285,7 +284,13 @@ EOF
     # Reload systemd
     systemctl daemon-reload
     
-    log_info "Systemd service created: tickertronix-hub.service"
+    # Enable service to start on boot
+    systemctl enable tickertronix-hub
+    
+    # Start the service now
+    systemctl start tickertronix-hub
+    
+    log_info "Systemd service created and started: tickertronix-hub.service"
 }
 
 create_helper_scripts() {
@@ -334,7 +339,10 @@ case "$1" in
         echo "  logs               Follow the application logs"
         echo "  setup-credentials  Configure Alpaca API credentials"
         echo ""
-        echo "API Endpoints (when running):"
+        echo "Web UI (when running):"
+        echo "  http://$(hostname).local:8080"
+        echo ""
+        echo "REST API Endpoints:"
         echo "  http://$(hostname).local:5001/health"
         echo "  http://$(hostname).local:5001/prices"
         echo "  http://$(hostname).local:5001/status"
@@ -354,6 +362,7 @@ set_permissions() {
     chown -R "$SERVICE_USER:$SERVICE_USER" "$INSTALL_DIR"
     
     # Make scripts executable
+    chmod +x "$INSTALL_DIR/main_web.py"
     chmod +x "$INSTALL_DIR/main_headless.py"
     chmod +x "$INSTALL_DIR/main.py"
     chmod +x "$INSTALL_DIR/credentials_setup.py"
@@ -372,19 +381,18 @@ print_completion_message() {
     echo "╚══════════════════════════════════════════════════════════════════╝"
     echo -e "${NC}"
     echo ""
-    echo -e "${YELLOW}NEXT STEPS:${NC}"
+    echo -e "${GREEN}The hub is now running and will start automatically on boot.${NC}"
     echo ""
-    echo "1. Configure your Alpaca API credentials:"
+    echo -e "${YELLOW}ACCESS YOUR HUB:${NC}"
+    echo ""
+    echo -e "  Web UI:   ${BLUE}http://$(hostname).local:8080${NC}"
+    echo -e "  REST API: ${BLUE}http://$(hostname).local:5001${NC}"
+    echo ""
+    echo -e "${YELLOW}NEXT STEP:${NC}"
+    echo ""
+    echo "  Configure your Alpaca API credentials via the Web UI,"
+    echo "  or from the command line:"
     echo -e "   ${BLUE}tickertronix setup-credentials${NC}"
-    echo ""
-    echo "2. Start the service:"
-    echo -e "   ${BLUE}tickertronix start${NC}"
-    echo ""
-    echo "3. Enable auto-start on boot:"
-    echo -e "   ${BLUE}sudo systemctl enable tickertronix-hub${NC}"
-    echo ""
-    echo "4. Access the hub from other devices:"
-    echo -e "   ${BLUE}http://$(hostname).local:5001${NC}"
     echo ""
     echo -e "${YELLOW}USEFUL COMMANDS:${NC}"
     echo "  tickertronix status    - Check if service is running"

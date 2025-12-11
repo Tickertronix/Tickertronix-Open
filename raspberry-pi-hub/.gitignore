@@ -1,0 +1,28 @@
+# Database files (contain user credentials and data)
+data/*.db
+data/*.db-journal
+
+# Logs
+logs/*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Legacy pi-gen files (no longer needed)
+pigen/

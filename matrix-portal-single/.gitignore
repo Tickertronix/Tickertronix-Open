@@ -1,0 +1,6 @@
+# CircuitPython runtime files
+wifi.dat
+device_config.json
+boot_out.txt
+.fseventsd/
+.Trashes/

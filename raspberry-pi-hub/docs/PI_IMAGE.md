@@ -16,7 +16,7 @@ How to flash and use the pi-gen-built image that ships with the hub preinstalled
      - Click the gear icon (advanced options) and set:
        - Enable SSH.
        - Wi-Fi SSID/password/country.
-       - Username/password (overrides the image default `pi/tickertronix`).
+       - Username/password (overrides the image default `tickertronix/tickertronix`).
        - Locale/timezone if desired.
      - Write the image.
    - **CLI dd** (manual alternative):
@@ -28,7 +28,12 @@ How to flash and use the pi-gen-built image that ships with the hub preinstalled
 
 ## First boot
 - Boot with Ethernet for easiest setup, or pre-set Wi-Fi in the pi-gen config (`WPA_ESSID/WPA_PSK`).
-- Default login (unless the builder changed it in `config`): user `pi`, password `tickertronix`. SSH to `ssh pi@tickertronixhub.local` or use the Pi’s IP. Change the password immediately: `passwd`.
+- Default login (unless the builder changed it in `config`): username `tickertronix`, password `tickertronix`. SSH to `ssh tickertronix@tickertronixhub.local` or use the Pi's IP.
+
+**IMPORTANT**: Change the default password immediately after first login for security:
+```bash
+passwd
+```
 - Give the first boot a minute for filesystem resize and service startup. Check status with `sudo systemctl status tickertronixhub`.
 
 ## Configure the hub
