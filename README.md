@@ -54,6 +54,13 @@ Continuous scrolling ticker across one or multiple 64x32 LED matrix panels.
 - Adafruit Matrix Portal S3
 - 64x32 RGB LED Matrix Panel(s) (1-6 panels)
 - 5V/4A+ power supply
+ 3D Printed Enclosure (3D Files Located at matrix-portal-scroll/3D Files)
+- 4 x M6 X 10mm x 7mm Heat Inserts (2 needed for each additional panel)
+- 4 x M6 x 10mm Button Head Screws (for end caps)
+- M6 x 25mm Socket Head Cap Screws (2 screws needed for connecting enclosures for each panel)
+- 4 x M2 x 6mm x 3.5mm heat inserts (for mounting Matrix Portal S3 to RH Endcap)
+- 4 x m2 x 8mm Screws (for securing Matrix Portal S3 board to RH Endcap)
+- 5/16 by 1 1/4 inch fluted wood dowels (2 per panel to align enclosures)
 
 **Features:**
 - Smooth scrolling ticker display
@@ -72,8 +79,11 @@ Shows one asset at a time on a 64x32 LED panel, cycling through your watchlist.
 
 **Hardware:**
 - Adafruit Matrix Portal S3
-- Single 64x32 RGB LED Matrix Panel
+- Single 64x32 P3 RGB LED Matrix Panel 
 - 5V power supply
+- 3D Printed Enclosure (3D Files Located at matrix-portal-single/3D Files)
+- 4 x M6 X 10mm x 7mm Heat Inserts
+- 4 x M6 x 10mm Button Head Screws
 
 **Features:**
 - Full-screen single-asset display
@@ -93,7 +103,9 @@ Touchscreen ticker display with interactive provisioning and stock browsing.
 **Hardware:**
 - ESP32-2432S028R (Cheap Yellow Display)
 - USB-C cable for power
-- Optional: 3D printed enclosure
+- Optional: 3D printed enclosure (3D files located in cyd-ticker-il9341/3D Files)
+- 4 x M2 x 6mm x 3.5mm heat press inserts (for enclosure)
+- 4 x m2 x 18mm socket head cap screws (for enclosure)
 
 **Features:**
 - 320x240 ILI9341 touchscreen display
