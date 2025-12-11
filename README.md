@@ -64,6 +64,7 @@ Continuous scrolling ticker across one or multiple 64x32 LED matrix panels.
 - 4 x M2 x 6mm x 3.5mm heat inserts (for mounting Matrix Portal S3 to RH Endcap)
 - 4 x m2 x 8mm Screws (for securing Matrix Portal S3 board to RH Endcap)
 - 5/16 by 1 1/4 inch fluted wood dowels (2 per panel to align enclosures)
+- 20mm rocker switch  (for switching A1 to GRND for provisioning)
 
 **Features:**
 - Smooth scrolling ticker display
@@ -91,6 +92,7 @@ Shows one asset at a time on a 64x32 LED panel, cycling through your watchlist.
 - 3D Printed Enclosure (3D Files Located at matrix-portal-single/3D Files)
 - 4 x M6 X 10mm x 7mm Heat Inserts
 - 4 x M6 x 10mm Button Head Screws
+- 20mm rocker switch  (for switching A1 to GRND for provisioning)
 
 **Features:**
 - Full-screen single-asset display
