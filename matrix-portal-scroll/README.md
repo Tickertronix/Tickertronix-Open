@@ -9,14 +9,18 @@ CircuitPython firmware for the Matrix Portal S3 scrolling ticker, now talking to
 - Scrolling logic, fonts, and display settings remain intact.
 
 ## Quick start
-1) Copy this folder to your Matrix Portal S3 `CIRCUITPY` drive.
-2) For first-time setup: hold A1 to GND on boot to enter provisioning.
-   - Connect to AP `TickerSetup`, browse to `http://192.168.4.1`.
-   - Enter Wi‑Fi SSID/password and your Hub URL (e.g., `http://<hub-ip>:5001`).
-   - Device saves config and reboots.
-3) Normal run:
-   - Reads `wifi.dat` and `device_config.json` (hub_base_url).
-   - Connects to Wi‑Fi and pulls `/prices` from the Hub; scrolls stocks/crypto/forex.
+1) Flash CircuitPython on the Matrix Portal S3  
+   - Download UF2 for Matrix Portal S3: https://circuitpython.org/board/matrixportal_s3/  
+   - Double-tap RESET to enter bootloader (`RPI-RP2` drive), drag UF2, wait for `CIRCUITPY` to appear.
+2) Copy firmware files  
+   - Easiest: download the latest `matrix-portal-scroll.zip` from GitHub Releases (or build with `./scripts/build_matrix_portal_releases.sh`), then unzip onto `CIRCUITPY` (keeps `lib/` + `fonts/` intact).  
+   - Manual: copy `code.py`, `api_client.py`, `provisioning_v2.py`, `wifimgr.py`, `fonts/`, and required `lib/` deps to `CIRCUITPY`.
+3) First-time provisioning  
+   - Hold A1 to GND on boot to enter provisioning.  
+   - Connect to AP `TickerSetup`, browse to `http://192.168.4.1`.  
+   - Enter Wi‑Fi + Hub URL (e.g., `http://<hub-ip>:5001`). Device saves config and reboots.
+4) Normal run  
+   - Reads `wifi.dat` and `device_config.json` (`hub_base_url`), connects to Wi‑Fi, pulls `/prices`, and scrolls stocks/crypto/forex.
 
 ## Files
 - `code.py` – Main firmware (scrolling).

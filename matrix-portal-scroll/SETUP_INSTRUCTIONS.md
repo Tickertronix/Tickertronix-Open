@@ -5,10 +5,17 @@
 - Provisioning collects Wi‑Fi + Hub URL (stored in `device_config.json` as `hub_base_url`).
 - Fonts/scrolling logic unchanged; forex still scrolls if enabled on the Hub.
 
+## Flash CircuitPython (one-time)
+1. Download CircuitPython UF2 for Matrix Portal S3: https://circuitpython.org/board/matrixportal_s3/
+2. Double-tap RESET to enter bootloader (`RPI-RP2` drive).
+3. Drag the UF2 onto `RPI-RP2`; board reboots as `CIRCUITPY`.
+
 ## Quick setup (fresh device)
 1. Connect the Matrix Portal S3 via USB; it mounts as `CIRCUITPY`.
-2. Delete old files if needed (keep `lib/` and fonts if you already have them).
-3. Copy these files to `CIRCUITPY`: `code.py`, `api_client.py`, `provisioning_v2.py`, `wifimgr.py`, `fonts/`, `lib/`, optional `boot.py`.
+2. Clean old files if needed (keep `lib/`/`fonts/` if already correct).
+3. Copy firmware to `CIRCUITPY`:
+   - Easiest: download `matrix-portal-scroll.zip` from GitHub Releases (or build with `./scripts/build_matrix_portal_releases.sh`) and unzip to `CIRCUITPY` (replacing files).  
+   - Manual: copy `code.py`, `api_client.py`, `provisioning_v2.py`, `wifimgr.py`, `fonts/`, `lib/`, optional `boot.py`.
 4. Ensure `lib/` has: `adafruit_bitmap_font/`, `adafruit_display_text/`, `adafruit_requests.mpy`, `adafruit_ticks.mpy`, `adafruit_hashlib/`, `rgbmatrix` deps per Matrix Portal S3.
 
 ## Provisioning (Hub)

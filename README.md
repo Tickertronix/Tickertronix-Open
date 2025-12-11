@@ -69,6 +69,7 @@ Continuous scrolling ticker across one or multiple 64x32 LED matrix panels.
 - WiFi provisioning via captive portal
 - Customizable fonts and scroll speed
 - 3D printable enclosure
+- Release bundle: `matrix-portal-scroll.zip` on GitHub Releases (or build locally with `./scripts/build_matrix_portal_releases.sh`)
 
 [**→ Full Setup Guide**](matrix-portal-scroll/README.md) | [**→ Setup Instructions**](matrix-portal-scroll/SETUP_INSTRUCTIONS.md)
 
@@ -92,6 +93,7 @@ Shows one asset at a time on a 64x32 LED panel, cycling through your watchlist.
 - Minimal flicker transitions
 - 4-color palette (black/white/green/red)
 - 3D printable enclosure
+- Release bundle: `matrix-portal-single.zip` on GitHub Releases (or build locally with `./scripts/build_matrix_portal_releases.sh`)
 
 [**→ Full Setup Guide**](matrix-portal-single/README.md)
 
@@ -139,6 +141,10 @@ Choose one or more display options and follow their respective setup guides link
 curl http://tickertronixhub.local:5001/health
 curl http://tickertronixhub.local:5001/prices
 ```
+
+## Release Bundles (Matrix Portal devices)
+- User downloads: `matrix-portal-scroll.zip` and `matrix-portal-single.zip` will be attached to GitHub Releases for drag-and-drop flashing to `CIRCUITPY`.
+- Maintainer build: run `./scripts/build_matrix_portal_releases.sh` to regenerate both ZIPs in `dist/`.
 
 ---
 

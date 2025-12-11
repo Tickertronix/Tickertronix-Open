@@ -121,6 +121,9 @@ Matrix Panel HUB75 Input
 
 ## Installation
 
+### Fast install (drag-and-drop)
+- Grab `matrix-portal-single.zip` from GitHub Releases (or build with `./scripts/build_matrix_portal_releases.sh`) and unzip directly to the `CIRCUITPY` drive (overwrite existing files). This includes `code.py`, support modules, fonts, and expected `lib/` deps.
+
 ### Step 1: Prepare Matrix Portal
 
 1. Install CircuitPython on Matrix Portal S3
