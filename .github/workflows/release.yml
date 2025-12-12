@@ -1,0 +1,112 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-matrix-portal-assets:
+    name: Build Matrix Portal Bundles
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Build Matrix Portal bundles
+        run: |
+          chmod +x scripts/build_matrix_portal_releases.sh
+          ./scripts/build_matrix_portal_releases.sh ${{ steps.version.outputs.VERSION }}
+
+      - name: Upload Matrix Portal Scroll artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: matrix-portal-scroll
+          path: dist/tickertronix-matrix-portal-scroll-v${{ steps.version.outputs.VERSION }}.zip
+
+      - name: Upload Matrix Portal Single artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: matrix-portal-single
+          path: dist/tickertronix-matrix-portal-single-v${{ steps.version.outputs.VERSION }}.zip
+
+  build-pi-hub-asset:
+    name: Build Pi Hub Bundle
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Build Pi Hub tarball
+        run: |
+          chmod +x scripts/build_pi_hub_release.sh
+          ./scripts/build_pi_hub_release.sh ${{ steps.version.outputs.VERSION }}
+
+      - name: Upload Pi Hub artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: raspberry-pi-hub
+          path: dist/tickertronix-raspberry-pi-hub-v${{ steps.version.outputs.VERSION }}.tar.gz
+
+  build-cyd-source-asset:
+    name: Build CYD Source Bundle
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Build CYD source bundle
+        run: |
+          chmod +x scripts/build_cyd_source_release.sh
+          ./scripts/build_cyd_source_release.sh ${{ steps.version.outputs.VERSION }}
+
+      - name: Upload CYD source artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cyd-ticker-source
+          path: dist/tickertronix-cyd-ticker-source-v${{ steps.version.outputs.VERSION }}.zip
+
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [build-matrix-portal-assets, build-pi-hub-asset, build-cyd-source-asset]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+
+      - name: Display structure
+        run: ls -R release-assets
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            release-assets/matrix-portal-scroll/*.zip
+            release-assets/matrix-portal-single/*.zip
+            release-assets/raspberry-pi-hub/*.tar.gz
+            release-assets/cyd-ticker-source/*.zip
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

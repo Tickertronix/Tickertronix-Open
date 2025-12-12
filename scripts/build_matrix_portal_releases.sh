@@ -2,18 +2,30 @@
 # Build drag-and-drop release ZIPs for Matrix Portal devices.
 #
 # Usage:
-#   ./scripts/build_matrix_portal_releases.sh
+#   ./scripts/build_matrix_portal_releases.sh [VERSION]
+#
+# Examples:
+#   ./scripts/build_matrix_portal_releases.sh 1.0.0
+#   ./scripts/build_matrix_portal_releases.sh        # defaults to unversioned
 #
 # Outputs:
-#   dist/matrix-portal-scroll.zip   # Scroll ticker bundle (with libs/fonts)
-#   dist/matrix-portal-single.zip   # Single-asset bundle (with libs/fonts)
+#   dist/tickertronix-matrix-portal-scroll-v{VERSION}.zip
+#   dist/tickertronix-matrix-portal-single-v{VERSION}.zip
 
 set -euo pipefail
 
+VERSION="${1:-}"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DIST_DIR="${ROOT_DIR}/dist"
 
 mkdir -p "${DIST_DIR}"
+
+# Version suffix for filenames
+if [ -n "$VERSION" ]; then
+  SUFFIX="-v${VERSION}"
+else
+  SUFFIX=""
+fi
 
 build_scroll() {
   local stage="${DIST_DIR}/matrix-portal-scroll"
@@ -28,8 +40,8 @@ build_scroll() {
   find "${stage}" -name "__pycache__" -prune -exec rm -rf {} +
   find "${stage}" -name ".DS_Store" -delete
 
-  (cd "${stage}" && zip -r "${DIST_DIR}/matrix-portal-scroll.zip" .)
-  echo "Built ${DIST_DIR}/matrix-portal-scroll.zip"
+  (cd "${stage}" && zip -r "${DIST_DIR}/tickertronix-matrix-portal-scroll${SUFFIX}.zip" .)
+  echo "Built ${DIST_DIR}/tickertronix-matrix-portal-scroll${SUFFIX}.zip"
 }
 
 build_single() {
@@ -46,8 +58,8 @@ build_single() {
   find "${stage}" -name "__pycache__" -prune -exec rm -rf {} +
   find "${stage}" -name ".DS_Store" -delete
 
-  (cd "${stage}" && zip -r "${DIST_DIR}/matrix-portal-single.zip" .)
-  echo "Built ${DIST_DIR}/matrix-portal-single.zip"
+  (cd "${stage}" && zip -r "${DIST_DIR}/tickertronix-matrix-portal-single${SUFFIX}.zip" .)
+  echo "Built ${DIST_DIR}/tickertronix-matrix-portal-single${SUFFIX}.zip"
 }
 
 build_scroll
