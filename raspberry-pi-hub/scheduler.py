@@ -4,7 +4,7 @@ Uses APScheduler to fetch prices at regular intervals.
 """
 
 import logging
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from typing import Optional, List
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
@@ -65,6 +65,15 @@ class PriceScheduler:
             replace_existing=True
         )
 
+        # Cleanup job to prune stale price history
+        self.scheduler.add_job(
+            self.cleanup_price_history,
+            trigger=IntervalTrigger(hours=getattr(config, 'PRICE_CLEANUP_INTERVAL_HOURS', 24)),
+            id='price_cleanup_job',
+            name='Prune old price history',
+            replace_existing=True
+        )
+
         # Start the scheduler
         self.scheduler.start()
         self.is_running = True
@@ -87,6 +96,12 @@ class PriceScheduler:
         self.scheduler.add_job(
             self.update_forex_prices,
             id='initial_forex_update',
+            replace_existing=True
+        )
+        # Run initial cleanup to enforce retention on startup
+        self.scheduler.add_job(
+            self.cleanup_price_history,
+            id='initial_price_cleanup',
             replace_existing=True
         )
 
@@ -174,6 +189,17 @@ class PriceScheduler:
             logger.info(f"Forex update completed: {updated} assets updated")
         except Exception as e:
             logger.error(f"Error during forex update: {e}", exc_info=True)
+
+    def cleanup_price_history(self):
+        """Prune old price history rows to enforce retention limits."""
+        try:
+            removed = self.db.cleanup_price_history()
+            logger.info(
+                "Price history cleanup completed; removed %s old rows.",
+                removed
+            )
+        except Exception as e:
+            logger.error("Error during price history cleanup: %s", e, exc_info=True)
 
     def _update_class_prices(self, asset_class: str, symbols: List[str], use_twelve_data: bool = False) -> int:
         """
