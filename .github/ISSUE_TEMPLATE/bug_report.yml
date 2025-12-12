@@ -1,0 +1,73 @@
+name: Bug report
+description: Help us fix problems by providing details about the issue.
+labels: [bug]
+body:
+  - type: dropdown
+    id: device
+    attributes:
+      label: Device type
+      options:
+        - Pi Hub
+        - Matrix Portal Scroll
+        - Matrix Portal Single
+        - CYD
+        - Other
+      description: Which component are you using?
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Which release tag or commit? (e.g., v1.0.0)
+      placeholder: v1.0.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Briefly describe the issue.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Numbered steps to reproduce the behavior.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error logs
+      description: Include any error messages or stack traces. Use code blocks where possible.
+      render: shell
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Configuration
+      description: WiFi setup, API provider, network info, or other relevant configuration details.

@@ -73,7 +73,7 @@ Continuous scrolling ticker across one or multiple 64x32 LED matrix panels.
 - WiFi provisioning via captive portal
 - Customizable fonts and scroll speed
 - 3D printable enclosure
-- Release bundle: `matrix-portal-scroll.zip` on GitHub Releases (or build locally with `./scripts/build_matrix_portal_releases.sh`)
+- Release bundle: `tickertronix-matrix-portal-scroll-v{version}.zip` on GitHub Releases (or build locally with `./scripts/build_matrix_portal_releases.sh`)
 
 ![Matrix Portal Scroll demo](assets/matrix-portal-scroll/demo.jpg)  
 Matrix Portal Scroll multi-panel build.
@@ -101,7 +101,7 @@ Shows one asset at a time on a 64x32 LED panel, cycling through your watchlist.
 - Minimal flicker transitions
 - 4-color palette (black/white/green/red)
 - 3D printable enclosure
-- Release bundle: `matrix-portal-single.zip` on GitHub Releases (or build locally with `./scripts/build_matrix_portal_releases.sh`)
+- Release bundle: `tickertronix-matrix-portal-single-v{version}.zip` on GitHub Releases (or build locally with `./scripts/build_matrix_portal_releases.sh`)
 
 ![Matrix Portal Single demo](assets/matrix-portal-single/demo.jpg)  
 Matrix Portal Single one-panel build.
@@ -156,9 +156,38 @@ curl http://tickertronixhub.local:5001/health
 curl http://tickertronixhub.local:5001/prices
 ```
 
-## Release Bundles (Matrix Portal devices)
-- User downloads: `matrix-portal-scroll.zip` and `matrix-portal-single.zip` will be attached to GitHub Releases for drag-and-drop flashing to `CIRCUITPY`.
-- Maintainer build: run `./scripts/build_matrix_portal_releases.sh` to regenerate both ZIPs in `dist/`.
+## Releases & Downloads
+
+Pre-built firmware bundles are available on the [**Releases page**](https://github.com/Tickertronix/Tickertronix-Open/releases).
+
+### Available Downloads
+
+- **Matrix Portal Scroll**: `tickertronix-matrix-portal-scroll-v{version}.zip`  
+  Drag-and-drop CircuitPython bundle (includes all libraries and fonts)
+
+- **Matrix Portal Single**: `tickertronix-matrix-portal-single-v{version}.zip`  
+  Drag-and-drop CircuitPython bundle (includes all libraries and fonts)
+
+- **Raspberry Pi Hub**: `tickertronix-raspberry-pi-hub-v{version}.tar.gz`  
+  Source tarball with automated setup script (`sudo ./setup.sh`)
+
+- **CYD Ticker**: `tickertronix-cyd-ticker-source-v{version}.zip`  
+  Arduino source code bundle (compile in Arduino IDE - see [CYD README](cyd-ticker-il9341/README.md))
+
+### Building Release Bundles Locally (Maintainers)
+
+```bash
+# Matrix Portal devices
+./scripts/build_matrix_portal_releases.sh 1.0.0
+
+# Raspberry Pi Hub tarball
+./scripts/build_pi_hub_release.sh 1.0.0
+
+# CYD source bundle
+./scripts/build_cyd_source_release.sh 1.0.0
+```
+
+Versioning: All components share a unified version number (currently v1.0.0). When cutting a new release, create a git tag (e.g., v1.1.0) and GitHub Actions will automatically build and attach all release assets.
 
 ---
 
