@@ -24,6 +24,8 @@ MAX_ASSETS_PER_CLASS = 50
 
 # Price update configuration
 UPDATE_INTERVAL_MINUTES = 5  # How often to fetch prices
+PRICE_RETENTION_DAYS = 7  # How many days of price history to retain
+PRICE_CLEANUP_INTERVAL_HOURS = 24  # How often to prune old prices
 
 # Twelve Data (forex) budget guidance (credits are 1 per symbol)
 FOREX_CREDITS_PER_DAY = 800

@@ -5,7 +5,7 @@ Uses SQLite for local storage of credentials, selected assets, and price data.
 
 import sqlite3
 import logging
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from typing import List, Dict, Optional, Tuple
 import config
 
@@ -318,6 +318,36 @@ class Database:
 
         conn.commit()
         conn.close()
+
+    def cleanup_price_history(self, retention_days: int = config.PRICE_RETENTION_DAYS) -> int:
+        """
+        Delete price history older than the configured retention window.
+
+        Args:
+            retention_days: Number of days of history to retain (inclusive of today).
+
+        Returns:
+            Number of rows removed.
+        """
+        cutoff_date = date.today() - timedelta(days=retention_days - 1)
+
+        conn = self.get_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            "DELETE FROM asset_prices WHERE date < ?",
+            (cutoff_date,)
+        )
+        deleted = cursor.rowcount if cursor.rowcount is not None else 0
+        conn.commit()
+        conn.close()
+
+        logger.info(
+            "Pruned price history older than %s (retention=%s days). Removed %s rows.",
+            cutoff_date,
+            retention_days,
+            deleted
+        )
+        return deleted
 
     def get_latest_prices(self, asset_class: Optional[str] = None,
                           symbol: Optional[str] = None) -> List[Dict]:
