@@ -407,6 +407,12 @@ You can query it directly if needed:
 sqlite3 data/prices.db "SELECT * FROM asset_prices ORDER BY last_updated DESC LIMIT 10;"
 ```
 
+Price history is automatically trimmed to the last **7 days**. A daily cleanup job runs inside the hub, and you can invoke it manually if needed:
+
+```bash
+python3 scripts/cleanup_price_history.py
+```
+
 ## CLI Commands
 
 After running `setup.sh`, the `tickertronix` command is available:

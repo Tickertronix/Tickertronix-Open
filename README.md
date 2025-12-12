@@ -327,8 +327,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
-Copyright (c) 2025 MaverickReloading
-
+Copyright (c) 2025 Tickertronix LLC
 ---
 
 ## Links
