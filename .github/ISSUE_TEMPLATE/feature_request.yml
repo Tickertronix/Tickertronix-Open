@@ -1,0 +1,45 @@
+name: Feature request
+description: Share your idea to improve Tickertronix-Open.
+labels: [enhancement]
+body:
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - Pi Hub
+        - Matrix Portal Scroll
+        - Matrix Portal Single
+        - CYD
+        - Other
+      description: Which component or area does this affect?
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem description
+      description: What problem does this solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How would you like to see this solved?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: List any alternative solutions you've considered.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Anything else we should know? Screenshots, references, etc.

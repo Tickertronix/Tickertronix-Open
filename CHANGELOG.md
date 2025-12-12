@@ -5,6 +5,23 @@ All notable changes to Tickertronix-Open will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- GitHub Actions for automated releases on version tags
+- Community health files:
+  - CODE_OF_CONDUCT.md (Contributor Covenant v2.1)
+  - SECURITY.md (vulnerability reporting policy)
+- Issue templates (bug report, feature request forms)
+- Pull request template with testing checklist
+- Versioned release asset naming (`tickertronix-{device}-v{version}.zip`)
+- Build scripts for Pi Hub tarball and CYD source bundle
+
+### Changed
+- Build scripts now accept version parameter for automated builds
+- README "Release Bundles" section updated with versioned asset names
+- Release process fully automated via GitHub Actions
+
 ## [1.0.0] - 2025-12-11
 
 ### Added
