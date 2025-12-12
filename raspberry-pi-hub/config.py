@@ -3,6 +3,7 @@ Configuration constants for Raspberry Pi Hub application.
 """
 
 import os
+import socket
 
 # Application paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -34,7 +35,8 @@ FOREX_CREDITS_PER_MINUTE = 8
 # Twelve Data integration (forex only)
 TWELVE_DATA_BASE_URL = os.environ.get('TWELVE_DATA_BASE_URL', 'https://api.twelvedata.com')
 TWELVE_DATA_API_KEY = os.environ.get('TWELVE_DATA_API_KEY')
-HUB_BASE_HOST = os.environ.get('HUB_BASE_HOST', 'tickertronixhub.local')
+DEFAULT_HOSTNAME = socket.gethostname()
+HUB_BASE_HOST = os.environ.get('HUB_BASE_HOST', f'{DEFAULT_HOSTNAME}.local')
 FOREX_POLL_MINUTES = 60  # dedicated forex cadence
 FOREX_BATCH_SIZE = 8
 FOREX_BATCH_DELAY_SEC = 10

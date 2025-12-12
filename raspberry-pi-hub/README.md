@@ -11,7 +11,7 @@ A local financial data hub that turns any Raspberry Pi into a market data server
 - **Automatic Updates** - Background scheduler fetches prices every 5 minutes
 - **Local Database** - SQLite storage for credentials and price history
 - **HTTP API** - REST endpoints accessible from any device on your network
-- **mDNS Discovery** - Access via `tickertronixhub.local` (no IP needed)
+- **mDNS Discovery** - Access via `tickertronixhub.local` (or your DNS A record); mDNS is best-effort, DNS is recommended for stability
 - **Free Tier Only** - Uses Alpaca's free market data API
 
 ## Quick Start (Recommended)
@@ -38,7 +38,7 @@ sudo ./setup.sh
 
 The setup script will:
 - Install all system dependencies
-- Set up hostname as `tickertronixhub.local`
+- Set the hostname to `tickertronixhub` (works with `.local` mDNS and DNS A-records)
 - Create a Python virtual environment
 - Install the systemd service
 - Create the `tickertronix` CLI helper
@@ -68,6 +68,15 @@ From any device on your network:
 curl http://tickertronixhub.local:5001/health
 curl http://tickertronixhub.local:5001/prices
 ```
+
+Reliable, collision-proof addressing (recommended):
+1. Reserve the Pi's IP in your router (DHCP reservation).
+2. Add a DNS A record on your router for `tickertronixhub.local` pointing to that IP (or use `tickertronixhub.lan` if your router dislikes `.local`).
+3. Set `HUB_BASE_HOST` so the UI links use that deterministic name:
+   ```bash
+   echo "HUB_BASE_HOST=tickertronixhub.local" | sudo tee -a /opt/tickertronix-hub/.env
+   sudo systemctl restart tickertronix-hub
+   ```
 
 ---
 

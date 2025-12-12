@@ -8,6 +8,7 @@
 set -euo pipefail
 
 HOSTNAME_OVERRIDE=""
+HOSTNAME_PREFIX="tickertronixhub"
 REPO_URL="https://github.com/tickertronix/alpaca-price-hub.git"
 BRANCH="main"
 INSTALL_DIR="/opt/tickertronix"
@@ -36,9 +37,19 @@ echo "[INFO] Updating apt and installing packages..."
 apt-get update -y
 apt-get install -y git python3-venv python3-pip avahi-daemon
 
+# Default to canonical hostname unless user overrides
+if [[ -z "$HOSTNAME_OVERRIDE" ]]; then
+  HOSTNAME_OVERRIDE="$HOSTNAME_PREFIX"
+fi
+
 if [[ -n "$HOSTNAME_OVERRIDE" ]]; then
   echo "[INFO] Setting hostname to $HOSTNAME_OVERRIDE"
   hostnamectl set-hostname "$HOSTNAME_OVERRIDE"
+  if grep -q "^127\\.0\\.1\\.1" /etc/hosts; then
+    sed -i "s/^127\\.0\\.1\\.1.*/127.0.1.1\t$HOSTNAME_OVERRIDE/" /etc/hosts
+  else
+    echo -e "127.0.1.1\t$HOSTNAME_OVERRIDE" >> /etc/hosts
+  fi
 fi
 
 echo "[INFO] Ensuring install dir $INSTALL_DIR"
@@ -75,6 +86,7 @@ WorkingDirectory=$INSTALL_DIR
 ExecStart=$INSTALL_DIR/.venv/bin/python3 main_web.py
 Restart=always
 User=root
+Environment=HUB_BASE_HOST=%H.local
 EnvironmentFile=-$INSTALL_DIR/.env
 
 [Install]

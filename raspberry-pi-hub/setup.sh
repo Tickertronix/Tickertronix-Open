@@ -26,7 +26,8 @@ NC='\033[0m' # No Color
 # Configuration
 INSTALL_DIR="/opt/tickertronix-hub"
 SERVICE_USER="tickertronix"
-HOSTNAME_NEW="tickertronixhub"
+HOSTNAME_PREFIX="tickertronixhub"
+HOSTNAME_NEW="$HOSTNAME_PREFIX"
 REPO_URL="https://github.com/Tickertronix/Tickertronix-Open.git"
 
 #-------------------------------------------------------------------------------
@@ -102,6 +103,7 @@ check_os() {
     fi
 }
 
+
 #-------------------------------------------------------------------------------
 # Installation steps
 #-------------------------------------------------------------------------------
@@ -131,27 +133,33 @@ install_system_packages() {
 
 setup_hostname() {
     log_step "Setting up hostname"
-    
+
     CURRENT_HOSTNAME=$(hostname)
-    
+
+    log_info "Suggested hostname: $HOSTNAME_NEW"
+
     if [ "$CURRENT_HOSTNAME" = "$HOSTNAME_NEW" ]; then
         log_info "Hostname already set to $HOSTNAME_NEW"
         return
     fi
-    
+
     read -p "Change hostname from '$CURRENT_HOSTNAME' to '$HOSTNAME_NEW'? (y/n): " -n 1 -r
     echo
-    
+
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         # Update hostname
         echo "$HOSTNAME_NEW" > /etc/hostname
-        
+
         # Update /etc/hosts
-        sed -i "s/127.0.1.1.*$CURRENT_HOSTNAME/127.0.1.1\t$HOSTNAME_NEW/g" /etc/hosts
-        
+        if grep -q "^127\\.0\\.1\\.1" /etc/hosts; then
+            sed -i "s/^127\\.0\\.1\\.1.*/127.0.1.1\t$HOSTNAME_NEW/g" /etc/hosts
+        else
+            echo -e "127.0.1.1\t$HOSTNAME_NEW" >> /etc/hosts
+        fi
+
         # Apply immediately
         hostnamectl set-hostname "$HOSTNAME_NEW"
-        
+
         log_info "Hostname changed to $HOSTNAME_NEW"
         log_info "The hub will be accessible at: ${HOSTNAME_NEW}.local"
     else
@@ -266,6 +274,8 @@ RestartSec=10
 
 # Environment
 Environment=PYTHONUNBUFFERED=1
+Environment=HUB_BASE_HOST=%H.local
+EnvironmentFile=-/opt/tickertronix-hub/.env
 
 # Logging
 StandardOutput=append:/opt/tickertronix-hub/logs/service.log

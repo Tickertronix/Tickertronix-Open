@@ -55,6 +55,8 @@ passwd
   sudo systemctl restart tickertronixhub
   ```
 - Logs: `journalctl -u tickertronixhub -f`.
-- Change hostname: `sudo hostnamectl set-hostname <newname>` and reboot; update any URLs accordingly.
+- Change hostname: `sudo hostnamectl set-hostname <newname>` and reboot; update any URLs accordingly (Avahi will advertise `<newname>.local`).
 
 If mDNS fails, reach the hub by IP or ensure `avahi-daemon` is running. Use `curl http://<pi-ip>:5001/prices` to confirm data access.
+
+Tip for reliability: reserve the Pi's IP in your router and add a DNS A record for `tickertronixhub.local` pointing to it; optionally set `HUB_BASE_HOST` in `/opt/tickertronix/.env` and restart the service so the UI uses that deterministic name.
