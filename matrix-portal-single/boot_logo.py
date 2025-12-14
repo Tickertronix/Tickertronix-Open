@@ -1,14 +1,15 @@
 """
-Tickertronix Boot Logo
+Tickertronix Boot Logo (Single Panel 64x32)
 
-Shows a pre-rendered palette BMP (128x32, black background) and wipes it
-in from the left. Keeps the init simple to avoid boot artifacts.
+Displays a pre-rendered BMP based on the 60x30 PNG, centered on a 64x32
+canvas so it does not touch the panel edges. Uses a simple slide-in animation
+to avoid boot artifacts and keep init lightweight.
 """
 
 LOGO_PATH = "boot_logo.bmp"
-LOGO_WIDTH = 128
+LOGO_WIDTH = 64
 LOGO_HEIGHT = 32
-MATRIX_WIDTH = 256  # set to 128 if only two panels
+MATRIX_WIDTH = 64
 MATRIX_HEIGHT = 32
 
 
@@ -25,10 +26,14 @@ def init_display_hardware():
         width=MATRIX_WIDTH,
         height=MATRIX_HEIGHT,
         bit_depth=1,
-        rgb_pins=[board.MTX_R1, board.MTX_G1, board.MTX_B1,
-                  board.MTX_R2, board.MTX_G2, board.MTX_B2],
-        addr_pins=[board.MTX_ADDRA, board.MTX_ADDRB,
-                   board.MTX_ADDRC, board.MTX_ADDRD],
+        rgb_pins=[
+            board.MTX_R1, board.MTX_G1, board.MTX_B1,
+            board.MTX_R2, board.MTX_G2, board.MTX_B2,
+        ],
+        addr_pins=[
+            board.MTX_ADDRA, board.MTX_ADDRB,
+            board.MTX_ADDRC, board.MTX_ADDRD,
+        ],
         clock_pin=board.MTX_CLK,
         latch_pin=board.MTX_LAT,
         output_enable_pin=board.MTX_OE,
@@ -56,7 +61,6 @@ def show_boot_logo():
 
     display, rgb_core = init_display_hardware()
 
-    # Validate dimensions to avoid stretched output
     try:
         if bitmap.width != LOGO_WIDTH or bitmap.height != LOGO_HEIGHT:
             print(f"[LOGO] Unexpected size {bitmap.width}x{bitmap.height}; expected {LOGO_WIDTH}x{LOGO_HEIGHT}")
@@ -74,8 +78,9 @@ def show_boot_logo():
         pass
 
     logo_x = max(0, (MATRIX_WIDTH - LOGO_WIDTH) // 2)
+    logo_y = max(0, (MATRIX_HEIGHT - LOGO_HEIGHT) // 2)
     start_x = -LOGO_WIDTH
-    tile_grid = displayio.TileGrid(bitmap, pixel_shader=bitmap.pixel_shader, x=start_x, y=0)
+    tile_grid = displayio.TileGrid(bitmap, pixel_shader=bitmap.pixel_shader, x=start_x, y=logo_y)
     group.append(tile_grid)
 
     display.root_group = group
@@ -87,7 +92,7 @@ def show_boot_logo():
     # Wipe-in / slide from left to center
     try:
         while tile_grid.x < logo_x:
-            tile_grid.x = min(tile_grid.x + 6, logo_x)
+            tile_grid.x = min(tile_grid.x + 4, logo_x)
             try:
                 display.refresh()
             except Exception:

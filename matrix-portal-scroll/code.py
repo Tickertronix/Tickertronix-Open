@@ -242,35 +242,55 @@ def _init_matrix_once():
     global _scroll_group, _top_scroll_group, _bottom_scroll_group
     global _single_line_font, _dual_line_font
 
-    if _matrix is not None:
-        print("[MATRIX] Display hardware already initialized")
-        return
-
     if not displayio or not framebufferio or not rgbmatrix:
         print("[MATRIX] Display libraries not available; skipping visual output")
         return
 
+    already_have_hw = _matrix is not None
+    if already_have_hw:
+        try:
+            if (_matrix.width != DISPLAY_WIDTH) or (_matrix.height != DISPLAY_HEIGHT):
+                print("[MATRIX] Existing display size mismatch; reinitializing hardware")
+                _matrix = None
+                _rgb_core = None
+                already_have_hw = False
+        except Exception:
+            _matrix = None
+            _rgb_core = None
+            already_have_hw = False
+
+    if already_have_hw and _root_group is not None:
+        print("[MATRIX] Display hardware already initialized")
+        return
+
     try:
-        displayio.release_displays()
-        rgb = rgbmatrix.RGBMatrix(
-            width=DISPLAY_WIDTH,
-            height=DISPLAY_HEIGHT,
-            bit_depth=1,
-            rgb_pins=[
-                board.MTX_R1, board.MTX_G1, board.MTX_B1,
-                board.MTX_R2, board.MTX_G2, board.MTX_B2,
-            ],
-            addr_pins=[
-                board.MTX_ADDRA, board.MTX_ADDRB,
-                board.MTX_ADDRC, board.MTX_ADDRD,
-            ],
-            clock_pin=board.MTX_CLK,
-            latch_pin=board.MTX_LAT,
-            output_enable_pin=board.MTX_OE,
-            doublebuffer=False,
-        )
-        _rgb_core = rgb
-        _matrix = framebufferio.FramebufferDisplay(rgb, auto_refresh=True)
+        if not already_have_hw:
+            displayio.release_displays()
+            rgb = rgbmatrix.RGBMatrix(
+                width=DISPLAY_WIDTH,
+                height=DISPLAY_HEIGHT,
+                bit_depth=1,
+                rgb_pins=[
+                    board.MTX_R1, board.MTX_G1, board.MTX_B1,
+                    board.MTX_R2, board.MTX_G2, board.MTX_B2,
+                ],
+                addr_pins=[
+                    board.MTX_ADDRA, board.MTX_ADDRB,
+                    board.MTX_ADDRC, board.MTX_ADDRD,
+                ],
+                clock_pin=board.MTX_CLK,
+                latch_pin=board.MTX_LAT,
+                output_enable_pin=board.MTX_OE,
+                doublebuffer=False,
+            )
+            _rgb_core = rgb
+            _matrix = framebufferio.FramebufferDisplay(rgb, auto_refresh=True)
+        else:
+            rgb = _rgb_core
+            try:
+                _matrix.auto_refresh = True
+            except Exception:
+                pass
         try:
             _matrix.brightness = 0.1
             print("[MATRIX] Set brightness to 10% for power safety")
@@ -1255,8 +1275,13 @@ def main():
     print("[MAIN] CODE VERSION: 2025-10-06-SCROLL")
     print("=" * 50)
     global _matrix, _rgb_core
-
-    print("[BOOT] Boot logo disabled for multi-panel scroll build")
+    if boot_logo:
+        try:
+            boot_display, boot_rgb_core = boot_logo.show_boot_logo()
+            _matrix = boot_display or _matrix
+            _rgb_core = boot_rgb_core or _rgb_core
+        except Exception as e:
+            print("[BOOT] Boot logo failed:", e)
 
     def _has_wifi_file():
         try:
