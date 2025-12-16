@@ -5,7 +5,7 @@
 #   ./scripts/build_matrix_portal_releases.sh [VERSION]
 #
 # Examples:
-#   ./scripts/build_matrix_portal_releases.sh 1.0.0
+#   ./scripts/build_matrix_portal_releases.sh 1.1.0
 #   ./scripts/build_matrix_portal_releases.sh        # defaults to unversioned
 #
 # Outputs:
