@@ -91,7 +91,7 @@ The ESP32-2432S028R has the following configuration (handled automatically by th
 
 ### TFT_eSPI Configuration
 
-**CRITICAL**: Firmware is identical across CYD variants; the only difference is the TFT_eSPI `User_Setup.h`. Use the included `User_Setup_IL9341.h` with this build.
+**CRITICAL**: Firmware is identical across CYD variants; the only difference is the TFT_eSPI `User_Setup.h`. Use the included `User_Setup_ST7789.h` with this build.
 
 1. **Locate TFT_eSPI Library**  
    - Arduino: `Documents/Arduino/libraries/TFT_eSPI/`  
@@ -99,7 +99,7 @@ The ESP32-2432S028R has the following configuration (handled automatically by th
 
 2. **Replace `User_Setup.h`**  
    - Backup the existing `User_Setup.h` (e.g., rename to `User_Setup_original.h`).  
-   - Copy this repo’s `User_Setup_IL9341.h` into the TFT_eSPI folder and rename it to `User_Setup.h`.
+   - Copy this repo’s `User_Setup_ST7789.h` into the TFT_eSPI folder and rename it to `User_Setup.h`.
 
 3. **Ensure it is selected**  
    - Open `User_Setup_Select.h` in the same folder.  
