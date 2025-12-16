@@ -5,7 +5,7 @@
 #   ./scripts/build_cyd_source_release.sh VERSION
 #
 # Example:
-#   ./scripts/build_cyd_source_release.sh 1.0.0
+#   ./scripts/build_cyd_source_release.sh 1.1.0
 #
 # Output:
 #   dist/tickertronix-cyd-ticker-source-v{VERSION}.zip
