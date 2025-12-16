@@ -162,32 +162,32 @@ Pre-built firmware bundles are available on the [**Releases page**](https://gith
 
 ### Available Downloads
 
-- **Matrix Portal Scroll**: `tickertronix-matrix-portal-scroll-v{version}.zip`  
+- **Matrix Portal Scroll**: `tickertronix-matrix-portal-scroll-v1.1.0.zip`
   Drag-and-drop CircuitPython bundle (includes all libraries and fonts)
 
-- **Matrix Portal Single**: `tickertronix-matrix-portal-single-v{version}.zip`  
+- **Matrix Portal Single**: `tickertronix-matrix-portal-single-v1.1.0.zip`
   Drag-and-drop CircuitPython bundle (includes all libraries and fonts)
 
-- **Raspberry Pi Hub**: `tickertronix-raspberry-pi-hub-v{version}.tar.gz`  
+- **Raspberry Pi Hub**: `tickertronix-raspberry-pi-hub-v1.1.0.tar.gz`
   Source tarball with automated setup script (`sudo ./setup.sh`)
 
-- **CYD Ticker**: `tickertronix-cyd-ticker-source-v{version}.zip`  
+- **CYD Ticker**: `tickertronix-cyd-ticker-source-v1.1.0.zip`
   Arduino source code bundle (compile in Arduino IDE - see [CYD README](cyd-ticker-il9341/README.md))
 
 ### Building Release Bundles Locally (Maintainers)
 
 ```bash
 # Matrix Portal devices
-./scripts/build_matrix_portal_releases.sh 1.0.0
+./scripts/build_matrix_portal_releases.sh 1.1.0
 
 # Raspberry Pi Hub tarball
-./scripts/build_pi_hub_release.sh 1.0.0
+./scripts/build_pi_hub_release.sh 1.1.0
 
 # CYD source bundle
-./scripts/build_cyd_source_release.sh 1.0.0
+./scripts/build_cyd_source_release.sh 1.1.0
 ```
 
-Versioning: All components share a unified version number (currently v1.0.0). When cutting a new release, create a git tag (e.g., v1.1.0) and GitHub Actions will automatically build and attach all release assets.
+Versioning: All components share a unified version number (currently v1.1.0). When cutting a new release, create a git tag (e.g., v1.1.0) and GitHub Actions will automatically build and attach all release assets.
 
 ---
 

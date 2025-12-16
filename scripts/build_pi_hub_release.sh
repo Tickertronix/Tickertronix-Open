@@ -5,7 +5,7 @@
 #   ./scripts/build_pi_hub_release.sh VERSION
 #
 # Example:
-#   ./scripts/build_pi_hub_release.sh 1.0.0
+#   ./scripts/build_pi_hub_release.sh 1.1.0
 #
 # Output:
 #   dist/tickertronix-raspberry-pi-hub-v{VERSION}.tar.gz
