@@ -6,11 +6,13 @@ A local financial data hub that turns any Raspberry Pi into a market data server
 
 ## Features
 
-- **Headless Operation** - Runs as a background service, no monitor needed
-- **Multi-Asset Support** - Track stocks, forex, and crypto (up to 50 assets per class)
+- **Dual UI Modes** - Web browser interface (port 8080) or desktop GUI (tkinter)
+- **Headless Operation** - Web UI works perfectly without a monitor
+- **Multi-Asset Support** - Track stocks, forex, and crypto (up to 35 assets per class)
 - **Automatic Updates** - Background scheduler fetches prices every 5 minutes
+- **Device Management** - Configure and monitor connected Tickertronix display devices
 - **Local Database** - SQLite storage for credentials and price history
-- **HTTP API** - REST endpoints accessible from any device on your network
+- **HTTP API** - REST endpoints accessible from any device on your network (port 5001)
 - **mDNS Discovery** - Access via `tickertronixhub.local` (or your DNS A record); mDNS is best-effort, DNS is recommended for stability
 - **Free Tier Only** - Uses Alpaca's free market data API
 
@@ -45,6 +47,19 @@ The setup script will:
 
 ### Configure Credentials
 
+After installation, the hub service will be running with the **Web UI** accessible on port 8080 and the **REST API** on port 5001.
+
+**Option 1: Web UI (Easiest)**
+
+Open a browser on any device on your network:
+```
+http://tickertronixhub.local:8080
+```
+
+Navigate to the Credentials page and enter your Alpaca API credentials.
+
+**Option 2: CLI Setup**
+
 ```bash
 tickertronix setup-credentials
 ```
@@ -61,9 +76,13 @@ tickertronix restart   # restart after config changes
 tickertronix stop      # stop temporarily
 ```
 
+**Note:** The automated setup runs the Web UI by default (`main_web.py`), making it accessible from any browser on your network.
+
 ### Access Your Hub
 
-From any device on your network:
+**Web UI:** `http://tickertronixhub.local:8080`
+
+**REST API:**
 ```bash
 curl http://tickertronixhub.local:5001/health
 curl http://tickertronixhub.local:5001/prices
@@ -115,7 +134,41 @@ pip3 install -r requirements.txt
 
 ## Usage
 
-### Starting the Application
+The hub can be run in two modes: **Web UI** (recommended for headless operation) or **Desktop GUI** (requires display).
+
+### Web UI Mode (Recommended)
+
+Start the web interface:
+
+```bash
+python3 main_web.py
+```
+
+Then access from any browser:
+- **Local:** `http://localhost:8080`
+- **Network:** `http://<pi-ip>:8080`
+- **mDNS:** `http://tickertronixhub.local:8080`
+
+**First-Time Setup:**
+
+1. **Configure Credentials** (`/credentials`)
+   - Enter your Alpaca API Key and Secret
+   - Click "Save & Verify" to validate
+
+2. **Select Assets** (`/assets`)
+   - Browse available Stocks, Forex, and Crypto
+   - Add up to 35 assets per class
+   - Assets are instantly tracked when added
+   - Click "Start Scheduler" to begin automatic updates
+
+3. **Monitor Prices** (`/` or `/prices`)
+   - View real-time price data
+   - See change amounts and percentages
+   - Track scheduler status and next update time
+
+### Desktop GUI Mode
+
+For Raspberry Pi with a connected display:
 
 ```bash
 python3 main.py
@@ -128,7 +181,7 @@ chmod +x main.py
 ./main.py
 ```
 
-### First-Time Setup
+**First-Time Setup:**
 
 1. **Enter Credentials**
    - When you first launch the app, you'll see the credentials screen
@@ -186,6 +239,87 @@ sudo systemctl daemon-reload
 sudo systemctl enable raspberry-pi-hub
 sudo systemctl start raspberry-pi-hub
 ```
+
+## User Interfaces
+
+The hub provides **two UI options** depending on your needs:
+
+### Web UI (Recommended)
+
+A browser-based interface accessible from any device on your network. Perfect for headless setups and remote access.
+
+**Access:** `http://tickertronixhub.local:8080` (or `http://<pi-ip>:8080`)
+
+**To start:**
+```bash
+python3 main_web.py
+```
+
+**Available Pages:**
+
+1. **Dashboard** (`/`)
+   - Overview of scheduler status
+   - Current price data for all tracked assets
+   - Quick stats and system health
+   - API endpoint information for LAN devices
+
+2. **Credentials** (`/credentials`)
+   - Configure Alpaca API credentials
+   - Verify API access
+   - One-time setup screen
+
+3. **Assets** (`/assets`)
+   - Browse available assets by class (Stocks, Forex, Crypto)
+   - Add/remove assets to track (up to 35 per class)
+   - Enable/disable individual assets
+   - Instantly fetch initial prices when adding new assets
+   - Start/stop the price scheduler
+
+4. **Prices** (`/prices`)
+   - Real-time price display with change indicators
+   - Sortable by symbol, class, or change percentage
+   - Auto-refreshing price data
+   - Last update timestamps
+
+5. **Devices** (`/devices`)
+   - Manage connected Tickertronix display devices
+   - Configure per-device settings (scroll mode, speed, brightness)
+   - Set custom asset ordering for each device
+   - Enable/disable devices
+
+### Tkinter GUI
+
+A desktop GUI that runs directly on the Raspberry Pi with a display attached.
+
+**To start:**
+```bash
+python3 main.py
+```
+
+**Interface Tabs:**
+
+1. **Credentials Screen** (first-time setup)
+   - Enter Alpaca API Key and Secret
+   - Real-time credential verification
+   - Saves to local database on success
+
+2. **Asset Selection Tab**
+   - Three columns for Stocks, Forex, and Crypto
+   - Multi-select listboxes (Ctrl+Click)
+   - Live asset count per class
+   - Refresh button to fetch latest available assets
+   - Save selections and auto-start scheduler
+
+3. **Status & Prices Tab**
+   - Scheduler status (Running/Stopped)
+   - Last update and next update times
+   - Scrollable price table with:
+     - Symbol, asset class, prev close, open, last price
+     - Change amount and percentage
+     - Last updated timestamp
+   - Auto-refreshes every 10 seconds
+
+**Note:** The tkinter GUI requires a display environment. For headless operation, use the Web UI instead.
 
 ## Local HTTP API
 
@@ -367,11 +501,20 @@ To access the price data from another device on your LAN:
 
 ## Troubleshooting
 
-### GUI doesn't start
+### Web UI can't be accessed
+
+- Check that the service is running: `tickertronix status`
+- Verify the port is accessible: `curl http://localhost:8080`
+- From another device, try using the Pi's IP instead of mDNS: `http://192.168.x.x:8080`
+- Check firewall settings: `sudo ufw status`
+- View logs for errors: `tickertronix logs`
+
+### Desktop GUI doesn't start
 
 - Ensure you're running on Raspberry Pi OS with desktop environment
 - Check that tkinter is installed: `python3 -c "import tkinter"`
 - Try running with `DISPLAY=:0 python3 main.py`
+- For headless setups, use the Web UI instead: `python3 main_web.py`
 
 ### API credentials verification fails
 
