@@ -1,4 +1,4 @@
-# CYD Ticker (Cheap Yellow Display)
+# CYD (Retro) Ticker (Cheap Yellow Display)
 
 ![CYD Ticker demo](../assets/cyd-ticker-il9341/demo.png)
 
