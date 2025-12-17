@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Tickertronix HUB{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #F5F5F5;
+            color: #212121;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 24px;
+        }
+
+        header {
+            background: #00031C;
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+
+        .logo {
+            height: clamp(28px, 6vw, 36px);
+            width: auto;
+        }
+
+        .brand-title {
+            font-size: clamp(18px, 4vw, 24px);
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-left: 8px;
+        }
+
+        header h1 {
+            font-size: clamp(20px, 3vw, 24px);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        nav {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            background: #1b2344;
+            display: inline-block;
+            font-weight: 500;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        nav a:hover {
+            background: #222c53;
+            transform: translateY(-1px);
+        }
+
+        nav a.active {
+            background: #2b3766;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #E0E0E0;
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            color: #00031C;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .btn {
+            background: #1976D2;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'IBM Plex Sans', sans-serif;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(25, 118, 210, 0.3);
+        }
+
+        .btn:hover {
+            background: #0F3460;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-success {
+            background: #4CAF50;
+            box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-success:hover {
+            background: #388E3C;
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn-danger {
+            background: #F44336;
+            box-shadow: 0 2px 4px rgba(244, 67, 54, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: #D32F2F;
+            box-shadow: 0 4px 8px rgba(244, 67, 54, 0.4);
+        }
+
+        .btn-secondary {
+            background: #757575;
+            box-shadow: 0 2px 4px rgba(117, 117, 117, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: #616161;
+        }
+
+        .alert {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #E8F5E9;
+            color: #2E7D32;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .alert-error {
+            background: #FFEBEE;
+            color: #C62828;
+            border-left: 4px solid #F44336;
+        }
+
+        .alert-info {
+            background: #E3F2FD;
+            color: #00031C;
+            border-left: 4px solid #00031C;
+        }
+
+        .alert-warning {
+            background: #FFF3E0;
+            color: #E65100;
+            border-left: 4px solid #FF9800;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="search"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'IBM Plex Sans', sans-serif;
+            margin-bottom: 15px;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="search"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #00031C;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #424242;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 720px;
+        }
+
+        th, td {
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 1px solid #E0E0E0;
+        }
+
+        th {
+            background: #FAFAFA;
+            font-weight: 600;
+            color: #424242;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover {
+            background: #FAFAFA;
+        }
+
+        .table-scroll {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .positive {
+            color: #4CAF50;
+            font-weight: 600;
+        }
+
+        .negative {
+            color: #F44336;
+            font-weight: 600;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-success {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .badge-warning {
+            background: #FFF3E0;
+            color: #E65100;
+        }
+
+        .badge-primary {
+            background: #E3F2FD;
+            color: #1565C0;
+        }
+
+        .status-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .status-item {
+            background: #FAFAFA;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #E0E0E0;
+        }
+
+        .status-label {
+            font-size: 12px;
+            color: #757575;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .status-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #00031C;
+        }
+
+        /* Tab styles */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #E0E0E0;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: #757575;
+            transition: all 0.2s;
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+
+        .tab:hover {
+            color: #00031C;
+        }
+
+        .tab.active {
+            color: #00031C;
+            border-bottom-color: #00031C;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Search box */
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            padding-left: 40px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23757575" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>') no-repeat 12px center;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                padding: 18px;
+            }
+
+            header {
+                padding: 18px 0;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            table {
+                min-width: 640px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            header {
+                padding: 16px 0;
+            }
+
+            .header-content {
+                gap: 10px;
+            }
+
+            nav {
+                gap: 10px;
+            }
+
+            nav a {
+                flex: 1 1 45%;
+                text-align: center;
+                padding: 10px 14px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            th, td {
+                padding: 10px 8px;
+                font-size: 14px;
+            }
+
+            table {
+                min-width: 560px;
+            }
+
+            .status-box {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            }
+        }
+
+        @media (max-width: 540px) {
+            .container {
+                padding: 14px;
+            }
+
+            header {
+                padding: 14px 0;
+            }
+
+            .header-content {
+                align-items: flex-start;
+            }
+
+            nav {
+                overflow-x: auto;
+                padding-bottom: 6px;
+            }
+
+            nav a {
+                flex: 1 1 calc(50% - 6px);
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            table {
+                min-width: 520px;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <img src="/static/images/logo.png" alt="Tickertronix Logo" class="logo">
+                <div>
+                    <h1><span class="brand-title">HUB</span></h1>
+                </div>
+            </div>
+            <nav>
+                <a href="/" {% if request.path == '/' %}class="active"{% endif %}>Dashboard</a>
+                <a href="/credentials" {% if request.path == '/credentials' %}class="active"{% endif %}>Credentials</a>
+                <a href="/assets" {% if request.path == '/assets' %}class="active"{% endif %}>Assets</a>
+                <a href="/prices" {% if request.path == '/prices' %}class="active"{% endif %}>Prices</a>
+                <a href="/devices" {% if request.path == '/devices' %}class="active"{% endif %}>Devices</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script>
+        // Tab functionality
+        function setupTabs() {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.dataset.tab;
+
+                    // Remove active class from all tabs and content
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                    // Add active class to clicked tab and corresponding content
+                    this.classList.add('active');
+                    document.getElementById(tabName).classList.add('active');
+                });
+            });
+        }
+
+        // Initialize tabs on page load
+        document.addEventListener('DOMContentLoaded', setupTabs);
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

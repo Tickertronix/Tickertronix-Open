@@ -1,0 +1,14 @@
+# Raspberry Pi Hub - Python Dependencies
+# Install with: pip3 install -r requirements.txt
+
+# HTTP requests
+requests>=2.31.0
+
+# Flask for local API server
+Flask>=3.0.0
+
+# Background task scheduler
+APScheduler>=3.10.4
+
+# Note: tkinter is included with Python on Raspberry Pi OS
+# Note: sqlite3 is included with Python standard library

@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+
+{% block title %}Assets - Raspberry Pi Hub{% endblock %}
+
+{% block content %}
+<h1 style="margin-bottom: 20px;">Asset Selection</h1>
+
+<div id="message"></div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; margin-bottom: 20px;">
+    <!-- Stocks -->
+    <div class="card">
+        <h2>📈 Stocks ({{ assets_by_class.stocks|length }}/{{ config.MAX_ASSETS_PER_CLASS }})</h2>
+
+        <button onclick="fetchAssets('stocks')" class="btn" style="width: 100%; margin-bottom: 15px;">
+            Fetch Available Stocks
+        </button>
+
+        <div id="stocks-select" style="display: none; margin-bottom: 15px;">
+            <select id="stocks-list" size="10" style="height: 200px;">
+                <option value="">Loading...</option>
+            </select>
+            <button onclick="addAsset('stocks')" class="btn btn-success" style="width: 100%; margin-top: 10px;">
+                Add Selected Stock
+            </button>
+        </div>
+
+        <div id="stocks-selected">
+            {% if assets_by_class.stocks %}
+                <h3 style="font-size: 14px; margin-bottom: 10px;">Selected Stocks:</h3>
+                <ul style="list-style: none; padding: 0;">
+                    {% for asset in assets_by_class.stocks %}
+                    <li style="padding: 5px; background: #f8f9fa; margin-bottom: 5px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
+                        <span>{{ asset.symbol }}</span>
+                        <button onclick="removeAsset('{{ asset.symbol }}', 'stocks')" class="btn btn-danger" style="padding: 4px 8px; font-size: 12px;">Remove</button>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p style="color: #6c757d;">No stocks selected yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Forex -->
+    <div class="card">
+        <h2>💱 Forex ({{ assets_by_class.forex|length }}/{{ config.MAX_ASSETS_PER_CLASS }})</h2>
+
+        <button onclick="fetchAssets('forex')" class="btn" style="width: 100%; margin-bottom: 15px;">
+            Fetch Available Forex
+        </button>
+
+        <div id="forex-select" style="display: none; margin-bottom: 15px;">
+            <select id="forex-list" size="10" style="height: 200px;">
+                <option value="">Loading...</option>
+            </select>
+            <button onclick="addAsset('forex')" class="btn btn-success" style="width: 100%; margin-top: 10px;">
+                Add Selected Forex
+            </button>
+        </div>
+
+        <div id="forex-selected">
+            {% if assets_by_class.forex %}
+                <h3 style="font-size: 14px; margin-bottom: 10px;">Selected Forex:</h3>
+                <ul style="list-style: none; padding: 0;">
+                    {% for asset in assets_by_class.forex %}
+                    <li style="padding: 5px; background: #f8f9fa; margin-bottom: 5px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
+                        <span>{{ asset.symbol }}</span>
+                        <button onclick="removeAsset('{{ asset.symbol }}', 'forex')" class="btn btn-danger" style="padding: 4px 8px; font-size: 12px;">Remove</button>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p style="color: #6c757d;">No forex selected yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Crypto -->
+    <div class="card">
+        <h2>₿ Crypto ({{ assets_by_class.crypto|length }}/{{ config.MAX_ASSETS_PER_CLASS }})</h2>
+
+        <button onclick="fetchAssets('crypto')" class="btn" style="width: 100%; margin-bottom: 15px;">
+            Fetch Available Crypto
+        </button>
+
+        <div id="crypto-select" style="display: none; margin-bottom: 15px;">
+            <select id="crypto-list" size="10" style="height: 200px;">
+                <option value="">Loading...</option>
+            </select>
+            <button onclick="addAsset('crypto')" class="btn btn-success" style="width: 100%; margin-top: 10px;">
+                Add Selected Crypto
+            </button>
+        </div>
+
+        <div id="crypto-selected">
+            {% if assets_by_class.crypto %}
+                <h3 style="font-size: 14px; margin-bottom: 10px;">Selected Crypto:</h3>
+                <ul style="list-style: none; padding: 0;">
+                    {% for asset in assets_by_class.crypto %}
+                    <li style="padding: 5px; background: #f8f9fa; margin-bottom: 5px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
+                        <span>{{ asset.symbol }}</span>
+                        <button onclick="removeAsset('{{ asset.symbol }}', 'crypto')" class="btn btn-danger" style="padding: 4px 8px; font-size: 12px;">Remove</button>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p style="color: #6c757d;">No crypto selected yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <button onclick="startScheduler()" class="btn btn-success" style="font-size: 16px;">
+        🚀 Start Price Updates
+    </button>
+    <p style="margin-top: 10px; color: #6c757d;">
+        Updates will run every {{ config.UPDATE_INTERVAL_MINUTES }} minutes automatically.
+    </p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function fetchAssets(assetClass) {
+    const formData = new FormData();
+    formData.append('action', 'fetch_assets');
+    formData.append('asset_class', assetClass);
+
+    const selectDiv = document.getElementById(`${assetClass}-select`);
+    const selectList = document.getElementById(`${assetClass}-list`);
+
+    selectDiv.style.display = 'block';
+    selectList.innerHTML = '<option>Loading...</option>';
+
+    try {
+        const response = await fetch('/assets', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            selectList.innerHTML = '';
+            data.assets.forEach(asset => {
+                const option = document.createElement('option');
+                option.value = asset.symbol;
+                option.textContent = `${asset.symbol} - ${asset.name}`;
+                selectList.appendChild(option);
+            });
+        } else {
+            selectList.innerHTML = '<option>Error loading assets</option>';
+        }
+    } catch (error) {
+        selectList.innerHTML = '<option>Error: ' + error.message + '</option>';
+    }
+}
+
+async function addAsset(assetClass) {
+    const selectList = document.getElementById(`${assetClass}-list`);
+    const symbol = selectList.value;
+
+    if (!symbol) {
+        showMessage('Please select an asset', 'error');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('action', 'add_asset');
+    formData.append('symbol', symbol);
+    formData.append('asset_class', assetClass);
+
+    try {
+        const response = await fetch('/assets', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showMessage(data.message, 'success');
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            showMessage(data.message, 'error');
+        }
+    } catch (error) {
+        showMessage('Error: ' + error.message, 'error');
+    }
+}
+
+async function removeAsset(symbol, assetClass) {
+    if (!confirm(`Remove ${symbol}?`)) return;
+
+    const formData = new FormData();
+    formData.append('action', 'remove_asset');
+    formData.append('symbol', symbol);
+    formData.append('asset_class', assetClass);
+
+    try {
+        const response = await fetch('/assets', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showMessage(data.message, 'success');
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            showMessage(data.message, 'error');
+        }
+    } catch (error) {
+        showMessage('Error: ' + error.message, 'error');
+    }
+}
+
+async function startScheduler() {
+    const formData = new FormData();
+    formData.append('action', 'start_scheduler');
+
+    try {
+        const response = await fetch('/assets', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showMessage(data.message, 'success');
+            setTimeout(() => window.location.href = '/', 1500);
+        } else {
+            showMessage(data.message, 'error');
+        }
+    } catch (error) {
+        showMessage('Error: ' + error.message, 'error');
+    }
+}
+
+function showMessage(message, type) {
+    const messageDiv = document.getElementById('message');
+    messageDiv.innerHTML = `<div class="alert alert-${type === 'success' ? 'success' : 'error'}">${message}</div>`;
+    setTimeout(() => {
+        messageDiv.innerHTML = '';
+    }, 3000);
+}
+</script>
+{% endblock %}

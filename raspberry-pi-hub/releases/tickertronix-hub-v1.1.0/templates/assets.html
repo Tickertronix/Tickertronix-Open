@@ -1,0 +1,657 @@
+{% extends "base.html" %}
+
+{% block title %}Asset Selection - Raspberry Pi Hub{% endblock %}
+
+{% block extra_css %}
+<style>
+    .asset-item {
+        padding: 12px 16px;
+        margin-bottom: 8px;
+        background: #FAFAFA;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: 2px solid transparent;
+    }
+
+    .asset-item:hover {
+        background: #E3F2FD;
+        border-color: #1976D2;
+    }
+
+    .asset-info {
+        flex: 1;
+    }
+
+    .asset-symbol {
+        font-weight: 700;
+        font-size: 15px;
+        color: #1976D2;
+    }
+
+    .asset-name {
+        font-size: 13px;
+        color: #757575;
+        margin-top: 2px;
+    }
+
+    .asset-list {
+        max-height: 400px;
+        overflow-y: auto;
+        margin-bottom: 20px;
+    }
+
+        .selected-asset {
+            background: #E8F5E9;
+            border-color: #4CAF50;
+        }
+
+        .selected-asset .asset-symbol {
+            color: #2E7D32;
+        }
+
+        .disabled-asset {
+            background: #F5F5F5;
+            border-color: #E0E0E0;
+            opacity: 0.7;
+        }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .count-badge {
+        background: #1976D2;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        color: #757575;
+    }
+
+    .empty-state-icon {
+        font-size: 48px;
+        margin-bottom: 10px;
+    }
+
+    .loading {
+        text-align: center;
+        padding: 20px;
+        color: #757575;
+    }
+
+    .selected-count {
+        color: #4CAF50;
+        font-weight: 700;
+    }
+
+    .limit-warning {
+        color: #F44336;
+        font-weight: 700;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1 style="margin-bottom: 20px;">📊 Asset Selection</h1>
+
+<div id="message"></div>
+
+<!-- Tabs -->
+<div class="card">
+    <div class="tabs">
+        <button class="tab active" data-tab="stocks-tab">📈 Stocks</button>
+        <button class="tab" data-tab="forex-tab">💱 Forex</button>
+        <button class="tab" data-tab="crypto-tab">₿ Crypto</button>
+    </div>
+
+    <!-- Stocks Tab -->
+    <div id="stocks-tab" class="tab-content active">
+        <div class="section-header">
+            <h2 style="margin: 0;">Available Stocks</h2>
+            <div>
+                <span id="stocks-selected-count" class="count-badge">
+                    {{ assets_by_class.stocks|selectattr('enabled')|list|length }}/{{ config.MAX_ASSETS_PER_CLASS }}
+                </span>
+            </div>
+        </div>
+
+        <div class="search-box">
+            <input type="search" id="stocks-search" placeholder="Search stocks by symbol or name..." oninput="filterAssets('stocks')">
+        </div>
+
+        <button onclick="fetchAssets('stocks')" class="btn" style="width: 100%; margin-bottom: 20px;">
+            🔄 Refresh Stocks List
+        </button>
+
+        <div id="stocks-available" class="asset-list">
+            <div class="loading">⏳ Loading stocks...</div>
+        </div>
+
+            <h3 style="margin-top: 30px; margin-bottom: 15px; color: #4CAF50;">
+                ✓ Selected Stocks (<span id="stocks-selected-final">{{ assets_by_class.stocks|length }}</span>)
+            </h3>
+
+        <div id="stocks-selected" class="asset-list" style="max-height: 250px;">
+            {% if assets_by_class.stocks %}
+                {% for asset in assets_by_class.stocks %}
+                <div class="asset-item {% if asset.enabled %}selected-asset{% else %}disabled-asset{% endif %}">
+                    <div class="asset-info">
+                        <div class="asset-symbol">{{ asset.symbol }}</div>
+                    </div>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <label style="display:flex; align-items:center; gap:4px; font-size:12px; color:#424242;">
+                            <input type="checkbox" {% if asset.enabled %}checked{% endif %} onchange="setAssetActive('{{ asset.symbol }}','stocks', this.checked)">
+                            Active
+                        </label>
+                        <button onclick="removeAsset('{{ asset.symbol }}', 'stocks')" class="btn btn-danger" style="padding: 6px 12px; font-size: 12px;">
+                            ✕ Remove
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <p style="color: #9E9E9E;">No stocks selected yet</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Forex Tab -->
+    <div id="forex-tab" class="tab-content">
+        <div class="section-header">
+            <h2 style="margin: 0;">Available Forex Pairs</h2>
+            <div>
+                <span id="forex-selected-count" class="count-badge">
+                    {{ assets_by_class.forex|selectattr('enabled')|list|length }}/{{ config.MAX_ASSETS_PER_CLASS }}
+                </span>
+            </div>
+        </div>
+
+        <div class="search-box">
+            <input type="search" id="forex-search" placeholder="Search forex pairs..." oninput="filterAssets('forex')">
+        </div>
+
+        <button onclick="fetchAssets('forex')" class="btn" style="width: 100%; margin-bottom: 20px;">
+            🔄 Refresh Forex List
+        </button>
+
+        <div id="forex-available" class="asset-list">
+            <div class="loading">⏳ Loading forex pairs...</div>
+        </div>
+
+            <h3 style="margin-top: 30px; margin-bottom: 15px; color: #4CAF50;">
+                ✓ Selected Forex (<span id="forex-selected-final">{{ assets_by_class.forex|length }}</span>)
+            </h3>
+
+        <div id="forex-selected" class="asset-list" style="max-height: 250px;">
+            {% if assets_by_class.forex %}
+                {% for asset in assets_by_class.forex %}
+                <div class="asset-item {% if asset.enabled %}selected-asset{% else %}disabled-asset{% endif %}">
+                    <div class="asset-info">
+                        <div class="asset-symbol">{{ asset.symbol }}</div>
+                    </div>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <label style="display:flex; align-items:center; gap:4px; font-size:12px; color:#424242;">
+                            <input type="checkbox" {% if asset.enabled %}checked{% endif %} onchange="setAssetActive('{{ asset.symbol }}','forex', this.checked)">
+                            Active
+                        </label>
+                        <button onclick="removeAsset('{{ asset.symbol }}', 'forex')" class="btn btn-danger" style="padding: 6px 12px; font-size: 12px;">
+                            ✕ Remove
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <p style="color: #9E9E9E;">No forex pairs selected yet</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Crypto Tab -->
+    <div id="crypto-tab" class="tab-content">
+        <div class="section-header">
+            <h2 style="margin: 0;">Available Cryptocurrencies</h2>
+            <div>
+                <span id="crypto-selected-count" class="count-badge">
+                    {{ assets_by_class.crypto|selectattr('enabled')|list|length }}/{{ config.MAX_ASSETS_PER_CLASS }}
+                </span>
+            </div>
+        </div>
+
+        <div class="search-box">
+            <input type="search" id="crypto-search" placeholder="Search crypto by symbol or name..." oninput="filterAssets('crypto')">
+        </div>
+
+        <button onclick="fetchAssets('crypto')" class="btn" style="width: 100%; margin-bottom: 20px;">
+            🔄 Refresh Crypto List
+        </button>
+
+        <div id="crypto-available" class="asset-list">
+            <div class="loading">⏳ Loading crypto assets...</div>
+        </div>
+
+            <h3 style="margin-top: 30px; margin-bottom: 15px; color: #4CAF50;">
+                ✓ Selected Crypto (<span id="crypto-selected-final">{{ assets_by_class.crypto|length }}</span>)
+            </h3>
+
+        <div id="crypto-selected" class="asset-list" style="max-height: 250px;">
+            {% if assets_by_class.crypto %}
+                {% for asset in assets_by_class.crypto %}
+                <div class="asset-item {% if asset.enabled %}selected-asset{% else %}disabled-asset{% endif %}">
+                    <div class="asset-info">
+                        <div class="asset-symbol">{{ asset.symbol }}</div>
+                    </div>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <label style="display:flex; align-items:center; gap:4px; font-size:12px; color:#424242;">
+                            <input type="checkbox" {% if asset.enabled %}checked{% endif %} onchange="setAssetActive('{{ asset.symbol }}','crypto', this.checked)">
+                            Active
+                        </label>
+                        <button onclick="removeAsset('{{ asset.symbol }}', 'crypto')" class="btn btn-danger" style="padding: 6px 12px; font-size: 12px;">
+                            ✕ Remove
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <p style="color: #9E9E9E;">No crypto selected yet</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Start Updates -->
+<div class="card">
+    <button onclick="startScheduler()" class="btn btn-success" style="font-size: 16px; width: 100%;">
+        🚀 Start Automatic Price Updates
+    </button>
+    <p style="margin-top: 15px; text-align: center; color: #757575;">
+        Updates will run every {{ config.UPDATE_INTERVAL_MINUTES }} minutes automatically
+    </p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Store fetched assets for filtering
+let availableAssets = {
+    stocks: [],
+    forex: [],
+    crypto: []
+};
+
+// Track load state to avoid duplicate fetches
+let loadingAssets = {
+    stocks: false,
+    forex: false,
+    crypto: false
+};
+
+// Currently selected assets (from backend)
+let selectedAssets = {
+    stocks: new Set({{ (assets_by_class.stocks | map(attribute='symbol') | list) | tojson }}),
+    forex: new Set({{ (assets_by_class.forex | map(attribute='symbol') | list) | tojson }}),
+    crypto: new Set({{ (assets_by_class.crypto | map(attribute='symbol') | list) | tojson }})
+};
+
+// Track enabled/disabled for rendering toggles
+let selectedEnabled = {
+    stocks: {},
+    forex: {},
+    crypto: {}
+};
+
+{% for asset in assets_by_class.stocks %}
+selectedEnabled.stocks["{{ asset.symbol }}"] = {{ 'true' if asset.enabled else 'false' }};
+{% endfor %}
+{% for asset in assets_by_class.forex %}
+selectedEnabled.forex["{{ asset.symbol }}"] = {{ 'true' if asset.enabled else 'false' }};
+{% endfor %}
+{% for asset in assets_by_class.crypto %}
+selectedEnabled.crypto["{{ asset.symbol }}"] = {{ 'true' if asset.enabled else 'false' }};
+{% endfor %}
+
+async function fetchAssets(assetClass, showLoading = true) {
+    if (loadingAssets[assetClass]) {
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('action', 'fetch_assets');
+    formData.append('asset_class', assetClass);
+
+    const availableDiv = document.getElementById(`${assetClass}-available`);
+    if (showLoading) {
+        availableDiv.innerHTML = '<div class="loading">⏳ Loading...</div>';
+    }
+
+    loadingAssets[assetClass] = true;
+
+    try {
+        const response = await fetch('/assets', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            availableAssets[assetClass] = data.assets;
+            renderAssets(assetClass, data.assets);
+        } else {
+            availableDiv.innerHTML = '<div class="empty-state"><p style="color: #F44336;">Error loading assets</p></div>';
+        }
+    } catch (error) {
+        availableDiv.innerHTML = '<div class="empty-state"><p style="color: #F44336;">Error: ' + error.message + '</p></div>';
+    } finally {
+        loadingAssets[assetClass] = false;
+    }
+}
+
+function renderAssets(assetClass, assets) {
+    const availableDiv = document.getElementById(`${assetClass}-available`);
+
+    if (!assets || assets.length === 0) {
+        availableDiv.innerHTML = '<div class="empty-state"><p>No assets found</p></div>';
+        return;
+    }
+
+    let html = '';
+    assets.forEach(asset => {
+        const isSelected = selectedAssets[assetClass].has(asset.symbol);
+        const isEnabled = selectedEnabled[assetClass][asset.symbol] ?? true;
+        let itemClass = isSelected ? 'asset-item selected-asset' : 'asset-item';
+        if (isSelected && !isEnabled) {
+            itemClass += ' disabled-asset';
+        }
+
+        html += `
+            <div class="${itemClass}" data-symbol="${asset.symbol}" data-name="${asset.name || asset.symbol}" onclick="toggleAsset('${asset.symbol}', '${assetClass}', this)">
+                <div class="asset-info">
+                    <div class="asset-symbol">${asset.symbol}</div>
+                    <div class="asset-name">${asset.name || asset.symbol}</div>
+                </div>
+                <div>${isSelected ? (isEnabled ? '✓ Active' : 'Paused') : '+ Add'}</div>
+            </div>
+        `;
+    });
+
+    availableDiv.innerHTML = html;
+}
+
+function renderSelectedList(assetClass) {
+    const container = document.getElementById(`${assetClass}-selected`);
+    const symbols = Array.from(selectedAssets[assetClass]).sort();
+
+    if (!container) return;
+
+    if (symbols.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p style="color: #9E9E9E;">No assets selected yet</p></div>';
+        return;
+    }
+
+    let html = '';
+    symbols.forEach(symbol => {
+        const enabled = selectedEnabled[assetClass][symbol] !== false;
+        const itemClass = enabled ? 'asset-item selected-asset' : 'asset-item disabled-asset';
+        html += `
+            <div class="${itemClass}">
+                <div class="asset-info">
+                    <div class="asset-symbol">${symbol}</div>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <label style="display:flex; align-items:center; gap:4px; font-size:12px; color:#424242;">
+                        <input type="checkbox" ${enabled ? 'checked' : ''} onchange="setAssetActive('${symbol}','${assetClass}', this.checked)">
+                        Active
+                    </label>
+                    <button onclick="removeAsset('${symbol}', '${assetClass}')" class="btn btn-danger" style="padding: 6px 12px; font-size: 12px;">
+                        ✕ Remove
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+
+    container.innerHTML = html;
+}
+
+async function filterAssets(assetClass) {
+    const searchInput = document.getElementById(`${assetClass}-search`);
+    const query = searchInput.value.toLowerCase();
+
+    if (!availableAssets[assetClass] || availableAssets[assetClass].length === 0) {
+        await fetchAssets(assetClass, false);
+    }
+
+    const assets = availableAssets[assetClass] || [];
+
+    // Smart search: filter by symbol OR name
+    const filtered = assets.filter(asset => {
+        const symbol = asset.symbol.toLowerCase();
+        const name = (asset.name || '').toLowerCase();
+        return symbol.includes(query) || name.includes(query);
+    });
+
+    renderAssets(assetClass, filtered);
+}
+
+async function toggleAsset(symbol, assetClass, element) {
+    const isSelected = selectedAssets[assetClass].has(symbol);
+
+    if (isSelected) {
+        // Remove asset
+        await removeAsset(symbol, assetClass);
+    } else {
+        // Add asset
+        const maxAssets = {{ config.MAX_ASSETS_PER_CLASS }};
+        const currentCount = selectedAssets[assetClass].size;
+
+        if (currentCount >= maxAssets) {
+            showMessage(`Maximum ${maxAssets} ${assetClass} allowed`, 'error');
+            return;
+        }
+
+        await addAsset(symbol, assetClass);
+    }
+}
+
+async function addAsset(symbol, assetClass) {
+    const formData = new FormData();
+    formData.append('action', 'add_asset');
+    formData.append('symbol', symbol);
+    formData.append('asset_class', assetClass);
+
+    try {
+        const response = await fetch('/assets', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            selectedAssets[assetClass].add(symbol);
+            updateCounts(assetClass);
+            showMessage(data.message, 'success');
+
+            selectedEnabled[assetClass][symbol] = true;
+            // Re-render to update UI
+            if (availableAssets[assetClass].length > 0) {
+                renderAssets(assetClass, availableAssets[assetClass]);
+            }
+
+            // Refresh selected list without full reload
+            renderSelectedList(assetClass);
+        } else {
+            showMessage(data.message, 'error');
+        }
+    } catch (error) {
+        showMessage('Error: ' + error.message, 'error');
+    }
+}
+
+async function removeAsset(symbol, assetClass) {
+    if (!confirm(`Remove ${symbol}?`)) return;
+
+    const formData = new FormData();
+    formData.append('action', 'remove_asset');
+    formData.append('symbol', symbol);
+    formData.append('asset_class', assetClass);
+
+    try {
+        const response = await fetch('/assets', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            selectedAssets[assetClass].delete(symbol);
+            delete selectedEnabled[assetClass][symbol];
+            updateCounts(assetClass);
+            showMessage(data.message, 'success');
+
+            // Re-render to update UI
+            if (availableAssets[assetClass].length > 0) {
+                renderAssets(assetClass, availableAssets[assetClass]);
+            }
+
+            // Refresh selected list without reload
+            renderSelectedList(assetClass);
+        } else {
+            showMessage(data.message, 'error');
+        }
+    } catch (error) {
+        showMessage('Error: ' + error.message, 'error');
+    }
+}
+
+function updateCounts(assetClass) {
+    const activeCount = Array.from(selectedAssets[assetClass]).filter(s => selectedEnabled[assetClass][s] !== false).length;
+    const totalCount = selectedAssets[assetClass].size;
+    const max = {{ config.MAX_ASSETS_PER_CLASS }};
+
+    document.getElementById(`${assetClass}-selected-count`).textContent = `${activeCount}/${max}`;
+    document.getElementById(`${assetClass}-selected-final`).textContent = totalCount;
+
+    // Update count badge color
+    const badge = document.getElementById(`${assetClass}-selected-count`);
+    if (activeCount >= max) {
+        badge.style.background = '#F44336';
+    } else if (activeCount > max * 0.7) {
+        badge.style.background = '#FF9800';
+    } else {
+        badge.style.background = '#1976D2';
+    }
+}
+
+async function startScheduler() {
+    const formData = new FormData();
+    formData.append('action', 'start_scheduler');
+
+    try {
+        const response = await fetch('/assets', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showMessage(data.message, 'success');
+            setTimeout(() => window.location.href = '/', 1500);
+        } else {
+            showMessage(data.message, 'error');
+        }
+    } catch (error) {
+        showMessage('Error: ' + error.message, 'error');
+    }
+}
+
+function showMessage(message, type) {
+    const messageDiv = document.getElementById('message');
+    messageDiv.innerHTML = `<div class="alert alert-${type === 'success' ? 'success' : 'error'}">${message}</div>`;
+    setTimeout(() => {
+        messageDiv.innerHTML = '';
+    }, 3000);
+}
+
+async function setAssetActive(symbol, assetClass, isActive) {
+    const formData = new FormData();
+    formData.append('action', 'set_asset_status');
+    formData.append('symbol', symbol);
+    formData.append('asset_class', assetClass);
+    formData.append('enabled', isActive ? 'true' : 'false');
+
+    try {
+        const response = await fetch('/assets', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        if (data.success) {
+            selectedEnabled[assetClass][symbol] = isActive;
+            updateCounts(assetClass);
+            renderSelectedList(assetClass);
+            if (availableAssets[assetClass].length > 0) {
+                renderAssets(assetClass, availableAssets[assetClass]);
+            }
+            showMessage(data.message, 'success');
+        } else {
+            showMessage(data.message, 'error');
+        }
+    } catch (error) {
+        showMessage('Error: ' + error.message, 'error');
+    }
+}
+
+// Auto-load all asset lists on page load so search works immediately
+document.addEventListener('DOMContentLoaded', () => {
+    fetchAssets('stocks');
+    fetchAssets('forex');
+    fetchAssets('crypto');
+
+    // Restore last active tab
+    const savedTab = localStorage.getItem('lastTab') || 'stocks-tab';
+    switchTab(savedTab);
+
+    // Wire tab clicks to remember selection
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            const name = tab.dataset.tab;
+            switchTab(name);
+            localStorage.setItem('lastTab', name);
+        });
+    });
+
+    ['stocks','forex','crypto'].forEach(ac => updateCounts(ac));
+});
+
+function switchTab(tabName) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    const tabBtn = document.querySelector(`.tab[data-tab="${tabName}"]`);
+    const tabContent = document.getElementById(tabName);
+    if (tabBtn) tabBtn.classList.add('active');
+    if (tabContent) tabContent.classList.add('active');
+}
+</script>
+{% endblock %}

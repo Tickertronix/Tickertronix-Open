@@ -1,0 +1,16 @@
+Tickertronix Hub - Release v1.1.0
+======================================
+
+Build Date: 2025-12-16 19:49:30 UTC
+Git Commit: 55b48d7
+
+Installation:
+-------------
+1. Extract this archive to your Raspberry Pi
+2. Run: sudo ./setup.sh
+3. Configure credentials: tickertronix setup-credentials
+4. Access Web UI: http://tickertronixhub.local:8080
+
+For full documentation, see README.md
+
+Project: https://github.com/Tickertronix/Tickertronix-Open

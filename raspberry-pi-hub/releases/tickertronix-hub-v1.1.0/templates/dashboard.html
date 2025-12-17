@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Raspberry Pi Hub{% endblock %}
+
+{% block content %}
+<h1 style="margin-bottom: 20px;">Dashboard</h1>
+
+<div class="card">
+    <h2>Hub API URL</h2>
+    <p style="margin: 0 0 10px 0; color: #6c757d;">
+        Use this URL for Matrix Portal provisioning (Hub base + /prices):
+    </p>
+    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+        <code id="hub-api-url">{{ hub_prices_url }}</code>
+        <button class="btn btn-secondary" style="padding:8px 12px;" onclick="copyHubUrl()">Copy</button>
+    </div>
+    <small style="color:#6c757d;">Chosen: {{ hub_base_url }}</small><br>
+    {% if hub_guess.lan_base %}
+    <small style="color:#6c757d;">LAN guess: {{ hub_guess.lan_base }}</small><br>
+    {% endif %}
+    <small style="color:#6c757d;">Host-based: {{ hub_guess.host_base }}</small>
+    {% if hub_guess.priv_bases and hub_guess.priv_bases|length > 0 %}
+    <p style="margin:6px 0; color:#6c757d;">Private IP candidates:</p>
+    <ul style="color:#6c757d; margin-top:0;">
+        {% for priv in hub_guess.priv_bases %}
+        <li>{{ priv }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <p style="margin-top:8px; color:#6c757d;">If the chosen URL is wrong, set env HUB_LAN_IP to your LAN IP (e.g., 192.168.x.x) and restart the hub.</p>
+</div>
+<div class="card">
+    <h2>Hub API URL</h2>
+    <p style="margin: 0 0 10px 0; color: #6c757d;">
+        Use this in your Matrix Portal provisioning form:
+    </p>
+    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+        <code id="hub-api-url">{{ request.host_url.rstrip('/') }}/prices</code>
+        <button class="btn btn-secondary" style="padding:8px 12px;" onclick="copyHubUrl()">Copy</button>
+    </div>
+    <small style="color:#6c757d;">Base: {{ request.host_url.rstrip('/') }}</small>
+</div>
+
+{% if not has_credentials %}
+<div class="alert alert-error">
+    <strong>⚠️ No credentials configured</strong><br>
+    Please <a href="/credentials">set up your Alpaca API credentials</a> to get started.
+</div>
+{% else %}
+<div class="alert alert-success">
+    ✅ Credentials configured
+</div>
+{% endif %}
+
+<div class="status-box">
+    <div class="status-item">
+        <div class="status-label">Total Assets</div>
+        <div class="status-value">{{ assets_by_class.stocks|length + assets_by_class.forex|length + assets_by_class.crypto|length }}</div>
+    </div>
+    <div class="status-item">
+        <div class="status-label">Stocks</div>
+        <div class="status-value">{{ assets_by_class.stocks|length }}/{{ config.MAX_ASSETS_PER_CLASS }}</div>
+    </div>
+    <div class="status-item">
+        <div class="status-label">Forex</div>
+        <div class="status-value">{{ assets_by_class.forex|length }}/{{ config.MAX_ASSETS_PER_CLASS }}</div>
+    </div>
+    <div class="status-item">
+        <div class="status-label">Crypto</div>
+        <div class="status-value">{{ assets_by_class.crypto|length }}/{{ config.MAX_ASSETS_PER_CLASS }}</div>
+    </div>
+</div>
+
+{% if scheduler_status %}
+<div class="card">
+    <h2>Scheduler Status</h2>
+    <div class="status-box">
+        <div class="status-item">
+            <div class="status-label">Status</div>
+            <div class="status-value">
+                {% if scheduler_status.is_running %}
+                    <span class="badge badge-success">Running</span>
+                {% else %}
+                    <span class="badge badge-warning">Stopped</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="status-item">
+            <div class="status-label">Update Interval</div>
+            <div class="status-value">{{ scheduler_status.interval_minutes }} min</div>
+        </div>
+        {% if scheduler_status.last_update %}
+        <div class="status-item">
+            <div class="status-label">Last Update</div>
+            <div class="status-value" style="font-size: 14px;">{{ scheduler_status.last_update[:19] }}</div>
+        </div>
+        {% endif %}
+        {% if scheduler_status.next_update %}
+        <div class="status-item">
+            <div class="status-label">Next Update</div>
+            <div class="status-value" style="font-size: 14px;">{{ scheduler_status.next_update[:19] }}</div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+{% if prices %}
+<div class="card">
+    <h2>Recent Prices ({{ prices|length }})</h2>
+    <div class="table-scroll">
+        <table>
+            <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Class</th>
+                    <th>Prev Close</th>
+                    <th>Open</th>
+                    <th>Last</th>
+                    <th>Change</th>
+                    <th>%</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for price in prices[:10] %}
+                {% set price_fmt = "%.3f" if price.asset_class == 'forex' else "%.2f" %}
+                <tr>
+                    <td><strong>{{ price.symbol }}</strong></td>
+                    <td><span class="badge badge-success">{{ price.asset_class }}</span></td>
+                    <td>${{ price_fmt|format(price.prev_close or 0) }}</td>
+                    <td>${{ price_fmt|format(price.open_price or 0) }}</td>
+                    <td>${{ price_fmt|format(price.last_price) }}</td>
+                    <td class="{% if price.change_amount >= 0 %}positive{% else %}negative{% endif %}">
+                        {{ "%+.2f"|format(price.change_amount) }}
+                    </td>
+                    <td class="{% if price.change_percent >= 0 %}positive{% else %}negative{% endif %}">
+                        {{ "%+.2f"|format(price.change_percent) }}%
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if prices|length > 10 %}
+    <p style="margin-top: 15px; text-align: center;">
+        <a href="/prices" class="btn">View All Prices →</a>
+    </p>
+    {% endif %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    No price data yet. <a href="/assets">Select assets</a> and wait for the first update (runs every {{ config.UPDATE_INTERVAL_MINUTES }} minutes).
+</div>
+{% endif %}
+
+<div class="card">
+    <h2>Quick Links</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+        <a href="/credentials" class="btn">
+            🔑 Setup Credentials
+        </a>
+        <a href="/assets" class="btn">
+            📊 Select Assets
+        </a>
+        <a href="/prices" class="btn">
+            💰 View All Prices
+        </a>
+        <a href="http://localhost:{{ config.API_PORT }}/prices" target="_blank" class="btn">
+            🔌 REST API
+        </a>
+    </div>
+</div>
+
+<script>
+function copyHubUrl() {
+    const el = document.getElementById('hub-api-url');
+    if (!el) return;
+    const text = el.textContent.trim();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Copied: ' + text);
+        }).catch(() => alert('Copy failed'));
+    } else {
+        alert(text);
+    }
+}
+</script>
+{% endblock %}
