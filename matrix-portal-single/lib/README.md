@@ -1,3 +1,8 @@
-This `lib/` folder is where CircuitPython library bundle dependencies should live on the `CIRCUITPY` drive.
+CircuitPython libraries used by `matrix-portal-single`.
 
-If you're copying this project onto a Matrix Portal S3, copy the required libraries listed in `matrix-portal-single/README.md` into this folder on the device.
+This repository vendors the required CircuitPython `.mpy` libraries under `lib/` so you can copy the
+entire `matrix-portal-single/` folder onto the `CIRCUITPY` drive and run without installing the
+library bundle separately.
+
+If you need to refresh these dependencies, replace the contents of this folder with the matching
+version from the Adafruit CircuitPython Library Bundle: https://circuitpython.org/libraries
