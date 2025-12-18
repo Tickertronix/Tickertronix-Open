@@ -3,7 +3,7 @@
 > Open-source real-time financial ticker display system with Raspberry Pi hub and multiple display options
 
 [![Tickertronix devices preview](assets/hero/hero.jpg)](assets/hero/hero.jpg)  
-Tickertronix hub with Matrix Portal display (example build).
+Matrix portal scrolling display (example build).
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
