@@ -31,7 +31,7 @@ Preview the hub’s configuration pages to see what the built-in web experience 
   
   ![Asset selection view](assets/screenshots/asset-selection.svg)
 
-> These SVG captures mirror the layout shown in the provided screenshots so users can quickly recognize key hub flows.
+> These SVG wrappers now embed the original screenshots directly so users can see the exact hub pages without any redraw artifacts.
 
 ### System Architecture
 
