@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="780" viewBox="0 0 360 780" fill="none">
+  <rect width="360" height="780" rx="28" fill="#0F1627"/>
+  <rect x="16" y="24" width="328" height="52" rx="12" fill="#0F1C2E" stroke="#1F2A44"/>
+  <text x="32" y="54" fill="#C6D3F5" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="600">tickertronixhub.local</text>
+  <text x="24" y="98" fill="#00AEEF" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="800">TICKERTRONIX</text>
+  <text x="232" y="98" fill="#00F7C5" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="800">HUB</text>
+  <g>
+    <rect x="20" y="116" width="74" height="30" rx="10" fill="#1E2C43"/>
+    <text x="30" y="136" fill="#C7D2F1" font-family="Arial,Helvetica,sans-serif" font-size="12" font-weight="700">Dashboard</text>
+    <rect x="106" y="116" width="74" height="30" rx="10" fill="#1E2C43"/>
+    <text x="116" y="136" fill="#C7D2F1" font-family="Arial,Helvetica,sans-serif" font-size="12" font-weight="700">Credentials</text>
+    <rect x="192" y="116" width="60" height="30" rx="10" fill="#1E2C43"/>
+    <text x="204" y="136" fill="#C7D2F1" font-family="Arial,Helvetica,sans-serif" font-size="12" font-weight="700">Assets</text>
+    <rect x="264" y="116" width="56" height="30" rx="10" fill="#1E2C43"/>
+    <text x="274" y="136" fill="#C7D2F1" font-family="Arial,Helvetica,sans-serif" font-size="12" font-weight="700">Prices</text>
+  </g>
+  <text x="24" y="174" fill="#E6EEFF" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="700">Dashboard</text>
+  <g>
+    <rect x="20" y="190" width="320" height="160" rx="16" fill="#111B2D" stroke="#203458" stroke-width="2"/>
+    <text x="32" y="218" fill="#A0B9EB" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="700">Hub API URL</text>
+    <text x="32" y="242" fill="#EAF0FF" font-family="Arial,Helvetica,sans-serif" font-size="13">Use this URL for Matrix Portal provisioning (Hub base + /prices):</text>
+    <rect x="32" y="258" width="248" height="34" rx="8" fill="#0F243A" stroke="#1E3556"/>
+    <text x="40" y="280" fill="#CDE4FF" font-family="Arial,Helvetica,sans-serif" font-size="13">http://tickertronixhub.local:5001</text>
+    <rect x="288" y="258" width="40" height="34" rx="8" fill="#E4ECF5"/>
+    <text x="297" y="280" fill="#1C3658" font-family="Arial,Helvetica,sans-serif" font-size="11" font-weight="800">Copy</text>
+    <text x="32" y="304" fill="#9AB9E7" font-family="Arial,Helvetica,sans-serif" font-size="12">Chosen: http://tickertronixhub.local:5001</text>
+    <text x="32" y="322" fill="#73E1B5" font-family="Arial,Helvetica,sans-serif" font-size="12">If the chosen URL is wrong, set env HUB_LAN_IP to your LAN IP.</text>
+  </g>
+  <g>
+    <rect x="20" y="364" width="320" height="94" rx="16" fill="#111B2D" stroke="#203458" stroke-width="2"/>
+    <text x="32" y="392" fill="#A0B9EB" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="700">Statistics</text>
+    <text x="32" y="416" fill="#EAF0FF" font-family="Arial,Helvetica,sans-serif" font-size="13">Total assets provisioned: 50</text>
+    <text x="32" y="438" fill="#EAF0FF" font-family="Arial,Helvetica,sans-serif" font-size="13">Active devices last 10 min: 1</text>
+  </g>
+  <text x="24" y="486" fill="#7082A6" font-family="Arial,Helvetica,sans-serif" font-size="12">Simplified recreation of the dashboard view shown in the provided screenshots.</text>
+</svg>

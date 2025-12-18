@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="780" viewBox="0 0 360 780" fill="none">
+  <rect width="360" height="780" rx="28" fill="#0F1627"/>
+  <rect x="16" y="24" width="328" height="48" rx="12" fill="#121A2C" stroke="#1F2A44"/>
+  <text x="32" y="54" fill="#C6D3F5" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="600">tickertronixhub.local</text>
+  <text x="24" y="94" fill="#ECEFF7" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="700">Live Prices</text>
+  <rect x="20" y="112" width="320" height="42" rx="10" fill="#2E8CF0"/>
+  <text x="100" y="140" fill="#F8FBFF" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="700">Fetch Latest Now</text>
+  <g>
+    <rect x="20" y="172" width="152" height="94" rx="14" fill="#111B2D" stroke="#203458" stroke-width="2"/>
+    <text x="32" y="200" fill="#9FB7EA" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700">SCHEDULER</text>
+    <rect x="32" y="212" width="64" height="22" rx="6" fill="#0DBA6D"/>
+    <text x="40" y="228" fill="#E9FFF3" font-family="Arial,Helvetica,sans-serif" font-size="12" font-weight="700">RUNNING</text>
+    <text x="32" y="252" fill="#D9E5FF" font-family="Arial,Helvetica,sans-serif" font-size="14">Next refresh: 5m</text>
+  </g>
+  <g>
+    <rect x="188" y="172" width="152" height="94" rx="14" fill="#111B2D" stroke="#203458" stroke-width="2"/>
+    <text x="200" y="200" fill="#9FB7EA" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700">LAST UPDATE</text>
+    <text x="200" y="226" fill="#E6EEFF" font-family="Arial,Helvetica,sans-serif" font-size="14">2025-12-17</text>
+    <text x="200" y="246" fill="#E6EEFF" font-family="Arial,Helvetica,sans-serif" font-size="14">19:07:23</text>
+  </g>
+  <g>
+    <rect x="20" y="280" width="320" height="94" rx="14" fill="#111B2D" stroke="#203458" stroke-width="2"/>
+    <text x="32" y="308" fill="#9FB7EA" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700">NEXT UPDATE</text>
+    <text x="32" y="334" fill="#E6EEFF" font-family="Arial,Helvetica,sans-serif" font-size="14">2025-12-17 19:12:23</text>
+    <text x="32" y="356" fill="#7AD0FF" font-family="Arial,Helvetica,sans-serif" font-size="12">Auto-refreshes every 5 minutes</text>
+  </g>
+  <text x="24" y="402" fill="#ECEFF7" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="700">All Prices (16)</text>
+  <text x="24" y="422" fill="#A7B7D8" font-family="Arial,Helvetica,sans-serif" font-size="12">Use “Fetch Latest Now” to refresh prices instantly.</text>
+  <g>
+    <rect x="20" y="440" width="320" height="38" rx="10" fill="#121A2C" stroke="#1F2A44"/>
+    <text x="32" y="464" fill="#CED9F5" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700">SYMBOL</text>
+    <text x="120" y="464" fill="#CED9F5" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700">CLASS</text>
+    <text x="200" y="464" fill="#CED9F5" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700">PREV CLOSE</text>
+    <text x="292" y="464" fill="#CED9F5" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700">OPEN</text>
+  </g>
+  <g>
+    <rect x="20" y="486" width="320" height="42" rx="10" fill="#131E33"/>
+    <text x="32" y="512" fill="#EAF0FF" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="700">AAAU</text>
+    <rect x="96" y="494" width="66" height="24" rx="6" fill="#ECF9EF"/>
+    <text x="105" y="510" fill="#2B8C3B" font-family="Arial,Helvetica,sans-serif" font-size="11" font-weight="700">STOCKS</text>
+    <text x="200" y="510" fill="#EAF0FF" font-family="Arial,Helvetica,sans-serif" font-size="14">$42.49</text>
+    <text x="292" y="510" fill="#EAF0FF" font-family="Arial,Helvetica,sans-serif" font-size="14">$42.30</text>
+  </g>
+  <g>
+    <rect x="20" y="534" width="320" height="42" rx="10" fill="#131E33"/>
+    <text x="32" y="560" fill="#EAF0FF" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="700">AAPL</text>
+    <rect x="96" y="542" width="66" height="24" rx="6" fill="#ECF9EF"/>
+    <text x="105" y="558" fill="#2B8C3B" font-family="Arial,Helvetica,sans-serif" font-size="11" font-weight="700">STOCKS</text>
+    <text x="200" y="558" fill="#EAF0FF" font-family="Arial,Helvetica,sans-serif" font-size="14">$274.61</text>
+    <text x="292" y="558" fill="#EAF0FF" font-family="Arial,Helvetica,sans-serif" font-size="14">$271.60</text>
+  </g>
+  <g>
+    <rect x="20" y="582" width="320" height="42" rx="10" fill="#131E33"/>
+    <text x="32" y="608" fill="#EAF0FF" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="700">DOGE/USD</text>
+    <rect x="114" y="590" width="72" height="24" rx="6" fill="#DFF3FF"/>
+    <text x="122" y="606" fill="#0B6EBE" font-family="Arial,Helvetica,sans-serif" font-size="11" font-weight="700">CRYPTO</text>
+    <text x="200" y="606" fill="#EAF0FF" font-family="Arial,Helvetica,sans-serif" font-size="14">$0.13</text>
+    <text x="292" y="606" fill="#EAF0FF" font-family="Arial,Helvetica,sans-serif" font-size="14">$0.13</text>
+  </g>
+  <text x="24" y="660" fill="#6F7DA0" font-family="Arial,Helvetica,sans-serif" font-size="12">Additional rows follow with price updates for stocks, crypto, and forex.</text>
+</svg>
