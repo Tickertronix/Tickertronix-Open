@@ -11,6 +11,28 @@ Tickertronix hub with Matrix Portal display (example build).
 
 Tickertronix-Open is a modular financial ticker system that transforms affordable hardware into professional-grade market displays. The system consists of a Raspberry Pi hub that fetches real-time market data and serves it to various display devices over your local network.
 
+### Hub Web UI Screenshots
+
+Preview the hub’s configuration pages to see what the built-in web experience looks like on mobile-sized screens:
+
+- **Dashboard overview** (hub API URL and navigation)
+  
+  ![Dashboard view](assets/screenshots/dashboard.svg)
+
+- **Live Prices** (auto-refreshing price cards and scheduler status)
+  
+  ![Live Prices view](assets/screenshots/live-prices.svg)
+
+- **Device management** (provisioned device details and settings)
+  
+  ![Device management view](assets/screenshots/device-management.svg)
+
+- **Asset selection** (stock search, active status, and selection list)
+  
+  ![Asset selection view](assets/screenshots/asset-selection.svg)
+
+> These SVG captures mirror the layout shown in the provided screenshots so users can quickly recognize key hub flows.
+
 ### System Architecture
 
 ```

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="780" viewBox="0 0 360 780" fill="none">
+  <rect width="360" height="780" rx="28" fill="#0F1627"/>
+  <rect x="16" y="24" width="328" height="48" rx="12" fill="#121A2C" stroke="#1F2A44"/>
+  <text x="32" y="54" fill="#C6D3F5" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="600">tickertronixhub.local</text>
+  <text x="24" y="94" fill="#ECEFF7" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="700">Device Management</text>
+  <rect x="20" y="112" width="320" height="42" rx="10" fill="#2E8CF0"/>
+  <text x="122" y="140" fill="#F8FBFF" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="700">Refresh Devices</text>
+  <g>
+    <rect x="20" y="168" width="152" height="72" rx="14" fill="#111B2D" stroke="#203458" stroke-width="2"/>
+    <text x="32" y="196" fill="#9FB7EA" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700">TOTAL DEVICES</text>
+    <text x="32" y="226" fill="#E6EEFF" font-family="Arial,Helvetica,sans-serif" font-size="20" font-weight="800">4</text>
+  </g>
+  <g>
+    <rect x="188" y="168" width="152" height="72" rx="14" fill="#111B2D" stroke="#203458" stroke-width="2"/>
+    <text x="200" y="196" fill="#9FB7EA" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700">ACTIVE (LAST 10 MIN)</text>
+    <text x="200" y="226" fill="#E6EEFF" font-family="Arial,Helvetica,sans-serif" font-size="20" font-weight="800">1</text>
+  </g>
+  <g>
+    <rect x="20" y="252" width="320" height="430" rx="16" fill="#111B2D" stroke="#203458" stroke-width="2"/>
+    <text x="32" y="280" fill="#A0B9EB" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="700">Device PROV-VFQ</text>
+    <rect x="242" y="266" width="82" height="28" rx="8" fill="#0DBA6D"/>
+    <text x="266" y="286" fill="#E9FFF3" font-family="Arial,Helvetica,sans-serif" font-size="12" font-weight="800">ACTIVE</text>
+    <text x="32" y="308" fill="#EAF0FF" font-family="Arial,Helvetica,sans-serif" font-size="13">Type: matrix_portal_single</text>
+    <text x="32" y="328" fill="#EAF0FF" font-family="Arial,Helvetica,sans-serif" font-size="13">Key: PROV-VFQ5XQW6</text>
+    <text x="32" y="348" fill="#EAF0FF" font-family="Arial,Helvetica,sans-serif" font-size="13">Last Seen: 2025-12-17 19:31:53</text>
+    <line x1="32" y1="360" x2="328" y2="360" stroke="#1E3556" stroke-width="1"/>
+    <text x="32" y="384" fill="#A0B9EB" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700">Brightness (1-10 scale)</text>
+    <rect x="32" y="396" width="296" height="28" rx="8" fill="#0F243A" stroke="#1E3556"/>
+    <text x="40" y="416" fill="#CDE4FF" font-family="Arial,Helvetica,sans-serif" font-size="13">4</text>
+    <text x="32" y="446" fill="#A0B9EB" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700">Update Interval (seconds)</text>
+    <rect x="32" y="458" width="296" height="28" rx="8" fill="#0F243A" stroke="#1E3556"/>
+    <text x="40" y="478" fill="#CDE4FF" font-family="Arial,Helvetica,sans-serif" font-size="13">800</text>
+    <text x="32" y="508" fill="#A0B9EB" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700">Single Panel Cycle (order)</text>
+    <rect x="32" y="520" width="296" height="28" rx="8" fill="#0F243A" stroke="#1E3556"/>
+    <text x="40" y="540" fill="#CDE4FF" font-family="Arial,Helvetica,sans-serif" font-size="13">stocks,crypto,forex</text>
+    <text x="32" y="568" fill="#A0B9EB" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700">Single Panel Cycle (seconds)</text>
+    <rect x="32" y="580" width="296" height="28" rx="8" fill="#0F243A" stroke="#1E3556"/>
+    <text x="40" y="600" fill="#CDE4FF" font-family="Arial,Helvetica,sans-serif" font-size="13">9</text>
+    <text x="32" y="628" fill="#A0B9EB" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700">Enabled</text>
+    <rect x="32" y="640" width="88" height="28" rx="14" fill="#0DBA6D"/>
+    <text x="52" y="659" fill="#E9FFF3" font-family="Arial,Helvetica,sans-serif" font-size="12" font-weight="800">STATUS</text>
+  </g>
+  <text x="24" y="706" fill="#7082A6" font-family="Arial,Helvetica,sans-serif" font-size="12">Key device controls mirrored from the screenshot for quick reference.</text>
+</svg>
