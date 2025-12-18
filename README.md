@@ -16,22 +16,20 @@ Tickertronix-Open is a modular financial ticker system that transforms affordabl
 Preview the hub’s configuration pages to see what the built-in web experience looks like on mobile-sized screens:
 
 - **Dashboard overview** (hub API URL and navigation)
-  
-  ![Dashboard view](assets/screenshots/dashboard.svg)
+
+  ![Dashboard view](assets/screenshots/dashboard.png)
 
 - **Live Prices** (auto-refreshing price cards and scheduler status)
-  
-  ![Live Prices view](assets/screenshots/live-prices.svg)
+
+  ![Live Prices view](assets/screenshots/live-prices.png)
 
 - **Device management** (provisioned device details and settings)
-  
-  ![Device management view](assets/screenshots/device-management.svg)
+
+  ![Device management view](assets/screenshots/device-management.png)
 
 - **Asset selection** (stock search, active status, and selection list)
-  
-  ![Asset selection view](assets/screenshots/asset-selection.svg)
 
-> These SVG wrappers now embed the original screenshots directly so users can see the exact hub pages without any redraw artifacts.
+  ![Asset selection view](assets/screenshots/asset-selection.png)
 
 ### System Architecture
 
