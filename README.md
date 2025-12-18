@@ -17,19 +17,19 @@ Preview the hub’s configuration pages to see what the built-in web experience 
 
 - **Dashboard overview** (hub API URL and navigation)
 
-  ![Dashboard view](assets/screenshots/dashboard.png)
+  <img src="assets/screenshots/dashboard.png" width="400">
 
 - **Live Prices** (auto-refreshing price cards and scheduler status)
 
-  ![Live Prices view](assets/screenshots/live-prices.png)
+  <img src="assets/screenshots/live-prices.png" width="400">
 
 - **Device management** (provisioned device details and settings)
 
-  ![Device management view](assets/screenshots/device-management.png)
+  <img src="assets/screenshots/device-management.png" width="400">
 
 - **Asset selection** (stock search, active status, and selection list)
 
-  ![Asset selection view](assets/screenshots/asset-selection.png)
+  <img src="assets/screenshots/asset-selection.png" width="400">
 
 ### System Architecture
 
